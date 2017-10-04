@@ -1,0 +1,52 @@
+Utilisation de Python
+=====================
+
+Console Python
+--------------
+
+La console Python peut être utilisée comme une simple calculatrice :
+
+.. doctest::
+
+    >>> 1+13
+    14
+
+
+Et un exemple plus compliqué, où l'on utilse la notation scientifique (``5E-6``), des nombres complexes (``3J``) et le symbol puissance (``**``) : 
+
+.. doctest::
+
+    >>> 0.5 + 3J + 5E-6 + 2**10
+    (1024.500005+3j)
+
+
+Il est possible d'assigner une valeur à une variable, que l'on peut ensuite utiliser
+
+.. doctest::
+
+    >>> a = 3.2
+    >>> b = 4.1
+    >>> a/b
+    0.7804878048780489
+
+
+Console IPython
+---------------
+
+.. ipython::
+
+    In [1]: a = 3.2
+
+    In [2]: b = 4.1
+
+    @doctest float
+    In [3]: a/b
+    Out[3]: 0.7804878048780489
+
+
+.. code-block:: ipython
+    
+    x = 1
+    !echo $x
+    
+blabl

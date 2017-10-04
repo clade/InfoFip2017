@@ -1,0 +1,30 @@
+----------------
+Installer Python
+----------------
+
+L'interpréteur Python
+---------------------
+
+Il existe plusieurs interpréteurs pour Python. Citons principalement CPython, qui est l'interpréteur de référence écrit en C, JPython (écrit en Java), pypy (un interpréteur plus rapide, partiellement écrit en Python !), IronPython (écrit en C#). Il existe aussi des interpréteurs Python pour programmer des micro-processeur (python-on-chip, pymite, MicroPython <https://micropython.org/>). Ces derniers ne peuvent interpréter qu'un partie du langage Python. Nous utiliserons CPython.
+
+Python est un langage qui évolue au cours des années. La définition du langage est faite de facto par l'interpréteur standard CPython et on assimile la verion de langage à celle de cette interpréteur. Actuellement (en 2016), il existe deux versions principales de Python courament utilisées, la version 2 et la version 3. La version 3 apporte des changements incompatibles avec la version 2, c'est pour cela que les dévellopeurs de Python on continué à dévelloper la version 2 en parallèle de la version 3. 
+
+Nous avons choisi d'utiliser dans ce cours la version 3 de Python. La version 2 étant toujours très utilisées, nous essaierons autant que possible de préciser les situations où la différence est notable. Lors de l'installation de Python, il est donc important de bien choisir. 
+
+La distribution Python
+----------------------
+
+Il existe plusieurs distributions de Python qui permettent d'installer facilement l'interpréteur CPython déjà compilé ainsi que les librairies suplémentaires. Dans ce cours, nous utiliserond la distribution Anaconda <https://www.continuum.io/downloads> qui offre plusieurs avantage : elle est disponible sous Windows, Mac et Linux. Elle offre aussi la possibilité d'avoir une installation indépendante du système (ce qui est particulièrement utile sous Linux où Python est souvent installé par défaut). 
+
+Nous laissons le lecteur suivre en ligne les instructions d'installation propre à son système. 
+
+
+
+
+
+
+
+
+
+
+

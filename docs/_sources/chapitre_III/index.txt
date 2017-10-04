@@ -1,0 +1,448 @@
+Les types de données en Python
+==============================
+
+Il s'agit d'une introduction basique sur les types de données offerts par
+python. Cette introduction peut servir d'aide mémoire pour les
+utilisations les plus courantes, sachant que l'aide officiel de python
+est beaucoup plus complète.
+
+Les nombres
+-----------
+
+C'est le type le plus simple. Il existe trois types de nombre :
+
+* Les entier (type ``int``). Par exemple ``a = 5``, en binaire ``a =
+  0b1001``, en hexadécimal ``a = 0x23``. 
+
+* Les nombres à virgules flottante. Par exemple ``a = 1234.234`` ou ``a
+  = 6.2E-34``. Les nombres sont enregistré en `double précision`_ (64
+  bits).  La précision relative est de 52 bits, soit environ
+  :math:`10^{-16}`. ::
+
+    a = 3.14
+    print a == a + 1E-15 # False
+    print a == a + 1E-16 # True
+
+* Les nombres complexes. Il sont enregistrés sous la forme de deux
+  nombres à virgules flottante. Par exemple ``a = 1 + 3J``.
+
+
+Les opérations sur les nombres sont les suivantes : 
+
+- somme : ``+``
+
+- produit : ``*``
+
+- différence ou négation : ``-``
+
+- division : ``/``
+
+- division entière : ``//``
+
+- modulo : ``%`` (par exemple ``7%2``)
+
+- puissance : ``**`` (par exemple ``2**10``)
+
+.. warning ::
+
+   En Python 2, la division simple ``/`` entre deux entiers est la division euclidienne. Ainsi, ``print 1/2`` donne ``0``. 
+   Dans la version 3, la division simple renvoie toujours un flottant. Comme souvent, il est possible d'anticiper ce comportement
+   dans le dernière version de Python 2:
+    
+      >>> from __future__ import division
+      >>> print(1/2)
+      0.5
+     
+Pour les nombres complexes, on peut facilement accéder à la partie réelle et imaginaire de la façon suivante : ::
+
+   a = 1 + 3J
+   print a.imag
+   print a.real
+   print "Norme ", sqrt(a.real**2 + a.imag**2)
+
+Nous avons introduit ici des attributs d'objet. Il s'agit de la notation ``objet.attribut`` (``imag`` est un attribut de l'objet ``1 + 3J``). Nous verrons ceci plus en détail par la suite. 
+
+Les booléens et comparaison
+---------------------------
+
+Il existe deux valeurs : ``True`` et ``False`` (attention à la casse). Les opérations sont par ordre de priorité : ``not``, ``and`` et ``or``. Les comparaisons se font à l'aide des symboles ``<``, ``<=``, ``==``, ``>`` et ``>=``. Pour savoir si deux valeurs sont différentes, on utilise ``<>`` ou ``!=``. 
+
+Les symboles d'opérations que l'on a vu sont des opérateurs binaires, c'est a dire qu'il appellent implicitement une fonction prenant deux arguments. Ce n'est pas le cas de and et or qui effectue en fait un test conditionnel. L'instruction ``A and B`` est interprété comme ``B if not A else A``, de même ``A or B`` équivaut à ``A if A else B``. Voir le chapitre XXX pour cette syntaxe particulière.
+
+.. warning ::
+
+   Les symboles ``&`` et ``|`` sont des opérateurs binaires. Ils réalisent les opérations and et or sur les entiers bit par bit en binaire (par exemple ``6 & 5`` donne ``4``). Il ne faut pas les utiliser pour les opérations sur des booléens. 
+
+Les chaînes de caractères (string)
+----------------------------------
+
+Création d'une chaîne de caractères
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Il existe trois façons de créer une chaîne de caractère : avec des 
+``'``, des ``"`` et des ``"""``. Ces caractères servent à délimiter les 
+début et la fin du texte de la chaîne de caractère. Les guillemets 
+simples ``'`` et doubles ``"`` sont équivalents. On pourra choisir l'un ou 
+l'autre. Il sera cependant judicieux, si une chaîne de caractère doit contenir
+un de ces guillements, d'utiliser l'autre pour le début et la fin de la chaîne. 
+Les trois guillements sont eux utilisés lorsque l'on veut qu'une chaîne 
+de caractère soit sur plusieurs lignes. 
+
+Voici quelques exemples : ::
+
+  s = 'Pierre'
+  s = "Aujourd'hui" #Rq : s = 'Aujourd'hui' ne va pas fonctionner
+  s = """Aujourd'hui, le petit enfant a dit: 
+         "Faisons le clown!" """
+
+
+Caractères spéciaux
+~~~~~~~~~~~~~~~~~~~
+
+Les **caractères spéciaux** sont les caractères qui ne sont pas affichables et en tant que tel. 
+Par exemple, il existe un caractère pour le retour à la ligne. Il est possible
+d'utiliser ce caractère dans une chaîne en utilisant ``\n``. L'antislash sert
+ici de caractère d'échappement pour indiquer que l'on va entrer un caractère
+spécial. La lettre ``n`` indique ici qu'il s'agit d'un retour à la ligne. 
+
+Voici un exemple : ::
+
+  s = "Un\nDeux"
+  print s
+  print len(s) # \n compte pour un caractère
+
+L'antislash sert aussi à insérer un guillemet dans une chaîne : ``'Aujourd\'hui'``.
+
+Manipulation des chaînes de caractères
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Tout comme une liste, il est possible d'accéder à chaque caractère d'une chaîne ou à une partie d'une 
+chaîne. ::
+
+  s = "Pierre"
+  print s[0]
+  print s[1:3]
+
+La longueur de la chaîne s'obtient avec la fonction ``len``. On peut aussi faire une boucle ``for`` sur chacun des éléments de la chaîne.
+
+Cependant, il n'est pas possible de modifier une chaîne de caractères (l'opération ``s[0]='p'`` échoue).
+
+La **concaténation** est l'opération qui consiste à créer une nouvelle chaîne en 
+mettant à la suite deux chaînes de caractères. Elle se fait à l'aide
+du signe ``+``. Par exemple : ::
+
+  s1 = 'Un'
+  s2 = 'Deux'
+  print s1+s2
+
+Une autre opération est importante, il s'agit du **formatage** d'une chaîne 
+de caractère. Cette opération consiste à insérer un élément variable dans
+une chaîne. Elle est souvent utilisée lorsque l'on veut afficher proprement 
+un résultat. Voici une exemple : ::
+
+  heure = 15
+  minute = 30
+  s = "Il est {0}h{1}".format(heure, minute)
+  print s
+
+
+Pour insérer un élément ou plusieurs éléments variables 
+dans une chaîne de caractère, on crée d'abord cette chaîne en mettant à la 
+place des ces éléments une accolade avec un numéro d'ordre ``{i}``. En appliquant la 
+méthode ``format`` sur cette chaîne, les accolades seront remplacées par 
+le ième argument. 
+
+
+Formatage de nombre
+~~~~~~~~~~~~~~~~~~~
+
+Nous avons déjà vu qu'il était possible de transformer un nombre en une chaîne de caractère à l'aide de la fonction ``str``. En utilisant le formatage de chaîne de caractère, il est possible de spécifier en détail comment ce nombre doit s'afficher. Par exemple, si il s'agit d'un nombre à virgule flottante, combien de décimales faut-il afficher, faut il utiliser la notation scientifique, etc. Pour cela, on rajoute à l'intérieur des accolades un code particulier. Ce code est précédé du signe ':'. 
+
+Voici quelques exemples : ::
+
+  from math import pi
+  print '{0:.5f}'.format(pi) # '3.14159'
+  c = 299792458. # Vitesse de la lumière en m/s
+  print 'c = {0:.3e} m/s'.format(c) # '2.998e+08'
+
+Le 'f' indique que l'on veut une notation a virgule fixe, le 'e' une notation scientifique. Le chiffre que l'on indique après le '.' donne le nombre de chiffre après la virgule que l'on souhaite.
+
+.. note ::
+
+   L'aide en ligne de Python fournit d'autres exemples et des détails. 
+
+   Il existe aussi une façon plus élémentaire de formater des chaîne de caractères avec Python et qui est obsolète (mais que l'on peut rencontrer). Pour formater le nombre ``pi``, cette méthode écrira dans ce cas ``'%.6f'%pi``. 
+
+
+Les accents
+~~~~~~~~~~~
+
+Historiquement, l'informatique étant née dans des pays anglo-saxons, les 
+caractères utilisés se limitent aux caractères latin simple (sans accent). En utilisant 
+les lettre minuscules, majuscules, les chiffres et autres signes, une 
+norme est apparu concernant 128 caractères. Chaque caractère se 
+voyant attribué un nombre entre 0 et 127 (:math:`2^7`). Dans un fichier 
+informatique, chaque caractère correspond alors à un octet. Les 128 
+octets restant ont fait l'objet de normes locales (par exemple la norme 
+Windows-1252 pour les ordinateurs vendu dans le pays latins occidentaux, ISO 
+8859-1 pour les unix/linux).
+
+Un nouveau standard, l'unicode a été développé à partir
+des années 90. Ce standard associe un nombre unique à chaque caractère
+(dans plus de 90 langues), allant des hiéroglyphes égyptiens aux milliers 
+de sinogrammes asiatiques. Reste alors le problème d'enregistrer dans un fichier
+un texte écrit à l'aide de cette norme. Le plus simple serait, au lieu 
+d'utiliser un octet par caractère, d'utiliser plusieurs octets. Cependant,
+les fichiers contenant du texte simple seraient alors inutilement
+long. Et d'autre part, il n'y aurait pas de compatibilité vers
+le standard ASCII (un fichier ASCII serait mal interprété). Il existe une
+norme permettant de ne pas avoir ces inconvénients : il s'agit de l'UTF-8. 
+Les caractères ASCII standard dont toujours enregistré sur un octet, et on 
+utilise plusieurs octets pour les autres caractères. 
+
+Dans Python 3, que nous utilisons, les chaînes de caractères sont des chaînes de caractères unicode. Si on souhaite des chaînes d'octet ASCII, il faut alors préfixer la chaîne par une ``b``, par exemple ``b'abcde'``. Dans Python 2, le comportement est opposé, par défaut les chaînes sont des chaînes d'octet et pour créer une chaîne unicode, il faut préfixer par un ``u``. 
+
+Il est possible de rentrer un caractère directement à partir de sa 
+valeur unicode. Il y a deux façons : pour un simple caractère, on peut 
+utiliser la fonction ``chr`` (unichr en Python 2), pour un caractères dans une chaîne on 
+utilise la séquence suivante ``'\uxxxx'``, où ``xxxx`` est la valeur
+en hexadécimal du caractère unicode. 
+
+Par exemple, la lettre grec α (alpha) a pour valeur 945. En héxadécimal, elle
+s'écrit 03B1. On pourra l'utiliser de la façon suivante : ::
+
+  print unichr(945)
+  print "La lettre \u03B1 est la première lettre de l'alphabet grec"
+
+Il y a enfin une notion supplémentaire qu'il faut introduire, il s'agit 
+de la possibilité d'afficher ou non un caractère. La console que nous 
+utilisons (sous linux ou spyder) permet d'afficher un très grand nombre de 
+caractères (essayer par exemple ``print u'\u4e2d\u570b'`` ou ``print 
+u'\u0646\u0627\u0646\u0628\u0644'``). Elle ne permet cependant pas 
+d'afficher les hiéroglyphes... Beaucoup de logiciels
+utilisent des polices de caractères qui n'affichent qu'une 
+partie très restreinte de la table unicode. 
+
+Les listes (list)
+-----------------
+
+* On peut créer et remplir une liste de plusieurs manières ::
+
+    l = [1, 2, 3, 4]
+    l = [] # liste vide
+    l.append(3) # maintenant l==[3]
+    l.append(4) # maintenant l==[3, 4]
+    l.insert(0,3.24+1j) # maintenant l==[3.24+1j,3,4]
+    print len(l) # Longueur de la liste
+
+* On peut changer un élément de la liste ::
+
+    l[3] = 23
+
+* La commande ``range(n)`` permet de créer directement la liste
+  ``[0,1,2, .., n-2, n-1]``. Cette liste commence à ``0`` et contient
+  ``n`` nombres (elle s'arrête donc à ``n-1``).
+
+* Une liste peut contenir des éléments de types différents.
+
+* Souvent on a besoin de créer une liste dans une boucle. Par exemple
+  la liste des ``n`` premiers nombres au carré peut se calculer de la
+  façon suivante ::
+
+    l = []
+    for i in range(n):
+        l.append(i**2)
+
+  Il existe cependant une façon plus directe de faire, en utilisant
+  les ``list comprehension`` ::
+
+    l = [i**2 for i in range(n)]
+
+* Si on souhaite appliquer une fonction à tous les éléments d'une
+  liste pour recréer une liste, il est possible d'utiliser la fonction
+  ``map`` ::
+
+    def mafonction(i):
+        if i%2==0:
+            return i**2
+        else:
+            return i**2-1
+    
+    map(mafonction, range(5)) # [0,0,4,8,16]
+
+* On peut parcourir une liste de plusieurs façons :: 
+
+    l = [1, 3, 5, "Pierre"]
+    for elm in l:
+        print elm
+
+    for i,elm in enumerate(l):
+        print elm, " est l'element numero ",i," de la liste"
+
+Avec les listes, nous avons donc introduit la structure de contrôle ``for``. Celle ci fonctionne sur tout type de séquence (par exemple les chaînes de caractères). Par cette syntaxe, elle est assez différente de ce qui existe dans d'autres langage informatique. 
+
+.. note ::
+   
+   Nous avons vu qu'il était possible de rajouter des éléments dans une liste. Pour cela, nous avons utilisé la syntaxe ``l.append(elm)``. Il s'agit ici de programmation orientée objet. Il est utile de savoir reconnaître la syntaxe : la liste est suivi du nom de la fonction que l'on applique (on appelle cette fonction une *méthode*) avec ses arguments. Ici, donc, ``append`` rajoute ``elm`` à la liste ``l``. 
+
+   Notons de plus, que l'objet ``l`` est modifié. La variable ``l`` désigne toujours la même liste, mais cette liste est modifiée (si on ajoute une page à un classeur, il s'agit toujours du même classeur). Ce comportement est différent de celui que nous avons vu dans la paragraphe précédent avec la méthode ``format`` sur les chaînes de caractères. En effet dans ce cas, on crée un nouvelle chaîne de caractère qui est renvoyé par la méthode - la chaîne initiale n'étant pas modifiée. La méthode ``append`` appliquée à une liste, modifie la liste, mais ne renvoie rien.
+   
+* Pour trier une liste, on peut soit utiliser la méthode ``.sort`` qui *modifie* la liste soit la fonction sorted qui renvoie une nouvelle liste triée. Il est possible d'ajouter comme argument optionnel une fonction qui donne l'ordre. Par defaut, python utilise la fonction cmp (ordre croissant pour les nombre et alphabétique pour le chaîne) ::
+
+    l = ['Pour', 'trier', 'une', 'liste', 'on', 'peut']
+    print sorted(l)
+    
+    def compare(a,b):
+        u""" Ordre alphabétique inversé sans tenir compte
+        de la casse"""
+        return cmp(b.lower(), a.lower())
+
+    print sorted(l, compare)
+
+
+* Fonction ``zip`` : lorsque l'on veut parcourir deux listes en même temps, il est possible d'utiliser la fonction zip qui crée alors une liste de n-uplets à partir de ``n`` listes. ::
+
+    liste_nom = ['Martin', 'Lefevre', 'Dubois', 'Durand']
+    liste_prenom = ['Emma', 'Nathan', 'Lola', 'Lucas']
+
+    for nom, prenom in zip(liste_nom, liste_prenom):
+        print nom, prenom
+
+
+
+Les n-uplets (tuple)
+--------------------
+
+Les n-uplets sont utilisés lorsque l'on veut regrouper des valeurs ensembles. On utilise
+une liste lorsque l'on a une longue séquence (dont la longueur est
+souvent variable) et un n-uplet pour regrouper quelques éléments. Par
+exemple ::
+
+    # n-uplet contenant prénom, nom, date de naissance et age
+    personne = ('Jean', 'Dupont', '13 juillet 1973', 38)
+    
+    print 'Nom :',personne[1]
+
+Les n-uplets sont utilisés lorsqu'une fonction renvoie plusieurs éléments ::
+   
+    def fonction(x):
+        return x**2,x**3
+
+    a = fonction(4) # a est un n-uplet
+    a,b = fonction(4) # a->16 et b->64
+
+
+Les dictionnaires (dictionnary)
+-------------------------------
+
+Contrairement aux listes ou aux n-uplets qui sont indéxés par des
+nombres (``l[2]``), un dictionnaire est indéxé par une clé. En
+général, la clé est une chaîne de caractère ou un nombre. On peut
+reprendre l'exemple précédent ::
+   
+    personne = {"Prenom":"Jean", "Nom":"Dupont", 
+    	     "date_naissance":"13 juillet 1973", "Age":38}
+    print "Nom :",personne['Nom']
+
+Tout comme pour une liste, on peut ajouter ou enlever des éléments à un dictionnaire ::
+
+    personne['telephone'] = "02 99 79 24 58" 
+    del personne['Age']
+
+
+Il est possible de parcourir et accéder à un dictionnaire de plusieurs façons ::
+
+    releve_note = {'Jacques':15, 'Jean':16, 'Pierre':14}
+
+    # Par clef
+    for nom in sorted(releve_note.keys()):
+        print 'La note de {0} est {1}'.format(nom, releve_note[nom])
+
+    # Par valeurs
+    notes = releve_note.values()
+    print "Moyenne ", sum(notes)/len(notes)
+
+    # Par clef et valeur
+    for cle, val in releve_note.items():
+        print 'La note de {0} est {1}'.format(cle, val)
+
+La clé d'un dictionnaire doit être un objet non modifiable, c'est à dire un nombre, une chaîne de caractère ou un tuple contenant uniquement des objet non modifiable.
+
+Les ensembles (set)
+-------------------
+
+Utilisé pour représenter un ensemble non-ordonné d'éléments qui sont
+tous différents. Par exemple ::
+
+    a = set([1,2,3])
+    b = set([3,5,6])
+
+    c = a | b # union
+    d = a & b # intersection
+
+Un exemple d'application :: 
+    
+    mdp = raw_input('Entrez un mot de passe contenant \ 
+                            au moins un signe de ponctuation')
+    ponctuation = set("?,.;:!")
+    if (ponctuation & mdp == set()):
+        print "Le mot de passe ne contient pas de signe de ponctuation"
+
+Les ensembles sont très pratique lorsque l'on veut supprimer des doublons. 
+
+
+Tableaux numpy (numpy array)
+----------------------------
+
+Cette structure n'est pas native de Python, mais fait partie du
+package numpy. C'est la structure qu'il faut utiliser pour traiter des
+données ou faire des calculs numériques. A la différence d'une liste,
+la taille d'un tableau numpy n'est pas modifiable et l'ensemble des
+données doit être du même type. Ces conditions permettent un traitement beaucoup plus rapide des données ::
+
+    import numpy as np
+
+    a = np.array([[1.5,3.14,5.27],[2.17,0.69,1.414]])
+    print a.shape
+    print a.dtype # 'float64'
+    
+    print a[1,2] # Attention, notation en partant de 0, comme en C 
+                # mais pas comme en Fortran, scilab, matlab, ...
+
+    a[1,2] = 8.56 # on peut changer un element
+
+    a = np.loadtxt('data_file.txt') 
+                # data_file est une fichier texte contenant des 
+                # données numériques (type tableur)
+    
+    a = np.arange(5) # comme range, sauf que l'on renvoie un tableau
+
+Un grand nombre d'opération simple peut être réalisé sur des tableaux. Elle sont réalisées élément par élément :  ::
+
+    a = np.array([[1.5,3.14,5.27],[2.17,0.69,1.414]])
+
+    b = 2*a + a**2 - a
+    
+Important : lors de l'utilisation de tableau contenant un grand nombre
+de données, cette méthode est **beaucoup** plus rapide (en plus d'être
+plus simple) que de faire l'opération élément par élément avec une
+liste. A titre d'exemple comparer la vitesse de ::
+
+    # N premiers carrés
+    a = [i**2 for i in range(1000000)]
+    b = np.arange(1000000)**2
+
+Les tableaux numpy sont proche du C ou de Fortran. Ils offrent plus de
+type que Python. Par exemple les nombres à virgule flottante peuvent
+être enregistrés en 32, 64 ou 96 bits. 
+
+.. note ::
+
+   Attention, le type des éléments d'un tableau ne peut pas être modifié. Ainsi, si un tableau est défini comme un tableau d'entier, on ne peut pas mettre dedans un nombre flottant. Celui ci sera automatiquement converti en nombre entier. C'est un piège auquel il faut faire attention ::
+    
+      a = np.arange(5)
+      a[1] = 3.141592
+      print a[1] # a[1]==3
+
+
+

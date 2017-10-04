@@ -1,0 +1,269 @@
+.. testsetup::
+
+    from math import sin
+
+==========================
+Eléments du langage Python
+==========================
+
+Expression en Python
+====================
+
+Dans un langage de programmation, on distingue les expressions des commandes. Les expressions vont être evaluer par l'interpréteur pour renvoyer un objet. 
+
+Nous n'allons pas faire une `description exhaustive <https://docs.python.org/3/reference/expressions.html>`_ de toutes les possibilités. 
+
+* Les parenthèses peuvent avoir plusieurs sens : 
+
+    >>> sin(1 + 2) # appel d'une fonction
+    0.1411200080598672
+    >>> (1 + 2J)*3 # parenthèse logique
+    (3+6j)
+    >>> (1, 2J)*3 # n-uplet
+    (1, 2j, 1, 2j, 1, 2j)
+
+* Nous vous rappelons la syntaxe dite de *list comprehension* :
+
+      >>> [i**2 for i in range(10)]
+      [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
+      >>> [i//3 for i in range(10) if i%2==0]
+      [0, 0, 1, 2, 2]
+
+  De même il existe des *comprehension* pour les dictionnaires et les ensembles : 
+
+      >>> s = {chr(97+i) for i in range(10) if i%2==0} # ensemble
+      >>> s == {'i', 'c', 'g', 'e', 'a'}
+      True
+      >>> d = {chr(97+i):i for i in range(10) if i%2==0} # dictionnaire
+      >>> d == {'e': 4, 'c': 2, 'g': 6, 'i': 8, 'a': 0}
+      True
+
+* Il possible d'utiliser une condition dans une expression sous la forme intuitive *renvoie A si B sinon C*. Ce type d'expression permet d'eviter de passer par des variables intermédiaires. 
+
+  .. code::
+
+    sqrt(x) if x>=0 else sqrt(-x)*1J
+    print("Bonjour" if lang=='fr' else 'Hello')
+
+
+
+Créer des fonctions
+===================
+
+Arguments d'une fonction
+------------------------
+
+Voici un exemple général de la définition d'une fonction :
+
+    >>> def f(a, b, c=1, d=2, *args, **kwd):
+    ...     print(a, b, c, d)
+    ...     print(args)
+    ...     print(kwd)
+
+Cette fonction possède deux arguments obligatoires, deux arguments optionels. Les variable args et kwd vont contenir les arguments supplémentaires (sans et avec mots-clé - keyword). 
+
+Lorsque l'on appelle une fonction, les arguments peuvent être passés anonymement (par ordre) ou avec un nom (*keyword argument*, ``nom=valeur``). Il faut mettre d'abord les arguments anonymes puis les autres. Il n'y a pas de lien entre le fait qu'un argument ait une valeur par défaut et le fait qu'il soit utilisé avec son nom. Lorsque les arguments sont passés avec leur nom, l'ordre est indiférent : 
+
+    >>> f(1, 2, 4)
+    1 2 4 2
+    ()
+    {}
+    >>> f(b=2 , a=2)
+    2 2 1 2
+    ()
+    {}
+
+Les arguments en trop sont envoyés dans args ou kwd : 
+
+    >>> f(1, 2, 3, 4, 5, 6)
+    1 2 3 4
+    (5, 6)
+    {}
+
+    >>> f(1, 2, 3, e=4)
+    1 2 3 2
+    ()
+    {'e': 4}
+
+    >>> f(1, 2, 3, 4, 5, 6, e=7)
+    1 2 3 4
+    (5, 6)
+    {'e': 7}
+
+
+Enfin, il est possible de séparer un groupe d'arguments à partir d'un itérable (list, tuple, ..) (séparation anonyme) ou à partir d'un dictionnaire (séparation avec mots-clés): 
+
+    >>> liste = list(range(1,3))
+    >>> dct = {'d':3, 'e':4}
+    >>> f(0, *liste, **dct)
+    ... # equivaut à f(0, 1, 2, d=3, e=4)
+    0 1 2 3
+    ()
+    {'e': 4}
+
+On remarquera que les variables ``args`` et ``kwd`` à l'intérieur de la fonction ``f`` sont différentes de celles que l'on a séparées (liste et dct dans cet example). 
+
+Il est de toute façon possible de séparer plusieurs listes ou dictionnaires : 
+
+    >>> print(*range(3), *range(3))
+    0 1 2 0 1 2
+
+Quelques remarques : 
+
+* Il ne faut par hésiter à utiliser des arguments par défaut (et c'est mieux que des variables globales)
+
+* Lorsque l'on appelle une fonction, il ne faut pas hésiter à nommer les arguments, même si c'est inutile et que c'est plus long à taper. Comparez ::
+
+    >>> scope.configure_channel(1, 0.01, 0.03, 50)
+    >>> scope.configure_channel(channel_name=1, scale=0.01, offset=0.03, impedance=50)
+
+
+
+Variable locale/globale
+-----------------------
+
+Les variables que l'on crée dans une fonction sont locale, c'est à dire indépendante d'une variable extérieur à la fonction qui porte le même nom. 
+
+    >>> def f():
+    ...     x = 2
+    >>> x = 3
+    >>> f()
+    >>> x
+    3
+
+
+A l'intérieur d'une fonction, une variable est soit locale soit globale
+
+
+
+.. _decorateur
+
+Décorateur
+----------
+
+Exemple : * fonction qui vérifie les arguments. 
+          * Vectorize pour les listes
+
+Les boucles
+===========
+
+Pour sortir d'une boucle on peut utiliser l'instruction ``break``, pour passer à l'itération suivante l'instruction ``continue``. Si un boucle se finit normalement, il est alors possible d'excuter un bloc d'instruction dans un ``else``. Voici un example::
+
+    def affiche_si_premier(n):
+        i=2
+        while i**2<=n:
+            if n%i==0:
+                print("{} n'est pas premier".format(n))
+                break
+            i = i+1
+        else:
+            print('{} est premier'.format(n))
+    
+
+Boucle for
+----------
+
+Nous avons vu qu'il est possible de faire des boucles for sur des listes, des chaînes de caractères, des tuples. Il existe un concept général que l'on appelle itérateur. On va dire que les listes, chaînes de carctères et les tuples sont des itérateurs. Un itérateur est un objet qui possède une méthode ``__iter__`` laquelle va renvoyer un objet (souvent le même) qui possède une méthode ``__next__``. On le verra plus en détail dans la partie orientée objet. Par exemple ::
+
+    >>> l = [0,1,2]
+    >>> x = l.__iter__()
+    >>> x.__next__()
+    0
+    >>> x.__next__()
+    1
+    >>> x.__next__()
+    2
+    >>> x.__next__()
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in <module>
+    StopIteration
+
+.. _generateur:
+
+Générateurs
+-----------
+
+Les générateurs sont utilisés pour faciliter la création d'itérateur. Il s'agit d'un fonction qui va renvoyer une série de résultat au lieu d'une simple valeur. On utilise la mot clé ``yield``. Un générateur ne pourra utiliser de ``return`` :
+
+    >>> def my_range(n):
+    ...     i = 0
+    ...     while i<n:
+    ...         yield i
+    ...         i = i + 1
+    
+Une nouvelle valeur est renvoyée à chaque fois que yield est appelé : 
+
+    >>> y = my_range(3)
+    >>> type(y)
+    <class 'generator'>
+    >>> y.__next__()
+    0
+    >>> y.__next__()
+    1
+    >>> y.__next__()
+    2
+    >>> y.__next__()
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in <module>
+    StopIteration
+
+Dans le cas où l'on veut transformer une liste en une autre liste, cette méthode permet d'éviter de créer explicitement la liste. Par exemple ::
+
+    >>> def carre(l):
+    ...     for elm in l:
+    ...         yield elm**2
+    ... 
+    >>> for elm in carre(range(4)):
+    ...     print(elm)
+    0
+    1
+    4
+    9
+
+Cette méthode permet aussi de parcourir les éléments d'une structure compliquée, comme un système 2D ou un arbre ::
+
+    def indices_tableau_2D(n, m):
+        for i in range(n):
+            for j in range(m):
+                yield i,j
+
+Et une structure en arbre. Affiche l'ensemble des fichiers d'un repertoire ayant une extension donnée::
+
+    import os
+
+    def parcourt_repertoire(repertoire, ext):
+        for elm in os.listdir(repertoire):
+            elm_abs_path = os.path.join(repertoire, elm)
+            if os.path.isdir(elm_path):
+                for filename in parcourt_repertoire(elm_abs_path, ext):
+                    yield filename
+                continue
+            if elm_abs_path.endswith(ext):
+                yield elm_abs_path
+
+    list(parcourt_repertoire('.', '.py'))
+
+        
+.. exercice::
+
+    Faire une fonction indices_tableau qui prend n argument et parcourt tous les indices de ce tableau nD. On utilisera des tuples pour les indices et on fera quelque chose de recursif (pour parcourir un tableau nD, on parcours un tableau (n-1)D le nombre de fois qu'il faut). 
+
+Les exceptions
+==============
+
+
+* Expressions : 
+
+* statements : 
+    * Les fonctions, variable locale/globale. On sort quand on veut. Exemple : nombre premier -> pas de else
+
+    * Les boucles : Pour les boucles, les générateurs (produit cartésien, avec le parcour récurssif d'un repertoire)
+
+    * Les exceptions
+
+    * les tests if then else. 
+
+
+.. toctree::
+   :maxdepth: 2
+

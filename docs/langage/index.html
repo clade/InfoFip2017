@@ -1,0 +1,376 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>3. Eléments du langage Python &mdash; documentation Python pour la physique 1.0</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/translations.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="documentation Python pour la physique 1.0" href="../index.html" />
+    <link rel="next" title="4. Programmation orientée objet" href="../objets/index.html" />
+    <link rel="prev" title="2. Les types de données en Python" href="../data_type/index.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="elements-du-langage-python">
+<h1>3. Eléments du langage Python<a class="headerlink" href="#elements-du-langage-python" title="Lien permanent vers ce titre">¶</a></h1>
+<div class="section" id="expression-en-python">
+<h2>3.1. Expression en Python<a class="headerlink" href="#expression-en-python" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Dans un langage de programmation, on distingue les expressions des commandes. Les expressions vont être evaluer par l&#8217;interpréteur pour renvoyer un objet.</p>
+<p>Nous n&#8217;allons pas faire une <a class="reference external" href="https://docs.python.org/3/reference/expressions.html">description exhaustive</a> de toutes les possibilités.</p>
+<ul>
+<li><p class="first">Les parenthèses peuvent avoir plusieurs sens :</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sin</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="c1"># appel d&#39;une fonction</span>
+<span class="go">0.1411200080598672</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mi">2</span><span class="n">J</span><span class="p">)</span><span class="o">*</span><span class="mi">3</span> <span class="c1"># parenthèse logique</span>
+<span class="go">(3+6j)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="n">J</span><span class="p">)</span><span class="o">*</span><span class="mi">3</span> <span class="c1"># n-uplet</span>
+<span class="go">(1, 2j, 1, 2j, 1, 2j)</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Nous vous rappelons la syntaxe dite de <em>list comprehension</em> :</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">i</span><span class="o">**</span><span class="mi">2</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)]</span>
+<span class="go">[0, 1, 4, 9, 16, 25, 36, 49, 64, 81]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">i</span><span class="o">//</span><span class="mi">3</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="k">if</span> <span class="n">i</span><span class="o">%</span><span class="mi">2</span><span class="o">==</span><span class="mi">0</span><span class="p">]</span>
+<span class="go">[0, 0, 1, 2, 2]</span>
+</pre></div>
+</div>
+<p>De même il existe des <em>comprehension</em> pour les dictionnaires et les ensembles :</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="p">{</span><span class="nb">chr</span><span class="p">(</span><span class="mi">97</span><span class="o">+</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="k">if</span> <span class="n">i</span><span class="o">%</span><span class="mi">2</span><span class="o">==</span><span class="mi">0</span><span class="p">}</span> <span class="c1"># ensemble</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">==</span> <span class="p">{</span><span class="s1">&#39;i&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">,</span> <span class="s1">&#39;e&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">}</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="nb">chr</span><span class="p">(</span><span class="mi">97</span><span class="o">+</span><span class="n">i</span><span class="p">):</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="k">if</span> <span class="n">i</span><span class="o">%</span><span class="mi">2</span><span class="o">==</span><span class="mi">0</span><span class="p">}</span> <span class="c1"># dictionnaire</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span> <span class="o">==</span> <span class="p">{</span><span class="s1">&#39;e&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="s1">&#39;i&#39;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Il possible d&#8217;utiliser une condition dans une expression sous la forme intuitive <em>renvoie A si B sinon C</em>. Ce type d&#8217;expression permet d&#8217;eviter de passer par des variables intermédiaires.</p>
+<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="n">sqrt</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">if</span> <span class="n">x</span><span class="o">&gt;=</span><span class="mi">0</span> <span class="k">else</span> <span class="n">sqrt</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">)</span><span class="o">*</span><span class="mi">1</span><span class="n">J</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Bonjour&quot;</span> <span class="k">if</span> <span class="n">lang</span><span class="o">==</span><span class="s1">&#39;fr&#39;</span> <span class="k">else</span> <span class="s1">&#39;Hello&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="creer-des-fonctions">
+<h2>3.2. Créer des fonctions<a class="headerlink" href="#creer-des-fonctions" title="Lien permanent vers ce titre">¶</a></h2>
+<div class="section" id="arguments-d-une-fonction">
+<h3>3.2.1. Arguments d&#8217;une fonction<a class="headerlink" href="#arguments-d-une-fonction" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Voici un exemple général de la définition d&#8217;une fonction :</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwd</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">kwd</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Cette fonction possède deux arguments obligatoires, deux arguments optionels. Les variable args et kwd vont contenir les arguments supplémentaires (sans et avec mots-clé - keyword).</p>
+<p>Lorsque l&#8217;on appelle une fonction, les arguments peuvent être passés anonymement (par ordre) ou avec un nom (<em>keyword argument</em>, <code class="docutils literal"><span class="pre">nom=valeur</span></code>). Il faut mettre d&#8217;abord les arguments anonymes puis les autres. Il n&#8217;y a pas de lien entre le fait qu&#8217;un argument ait une valeur par défaut et le fait qu&#8217;il soit utilisé avec son nom. Lorsque les arguments sont passés avec leur nom, l&#8217;ordre est indiférent :</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">f</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="go">1 2 4 2</span>
+<span class="go">()</span>
+<span class="go">{}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f</span><span class="p">(</span><span class="n">b</span><span class="o">=</span><span class="mi">2</span> <span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">2 2 1 2</span>
+<span class="go">()</span>
+<span class="go">{}</span>
+</pre></div>
+</div>
+<p>Les arguments en trop sont envoyés dans args ou kwd :</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">f</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+<span class="go">1 2 3 4</span>
+<span class="go">(5, 6)</span>
+<span class="go">{}</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">f</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">e</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">1 2 3 2</span>
+<span class="go">()</span>
+<span class="go">{&#39;e&#39;: 4}</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">f</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="n">e</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+<span class="go">1 2 3 4</span>
+<span class="go">(5, 6)</span>
+<span class="go">{&#39;e&#39;: 7}</span>
+</pre></div>
+</div>
+<p>Enfin, il est possible de séparer un groupe d&#8217;arguments à partir d&#8217;un itérable (list, tuple, ..) (séparation anonyme) ou à partir d&#8217;un dictionnaire (séparation avec mots-clés):</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">liste</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dct</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;d&#39;</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;e&#39;</span><span class="p">:</span><span class="mi">4</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">*</span><span class="n">liste</span><span class="p">,</span> <span class="o">**</span><span class="n">dct</span><span class="p">)</span>
+<span class="gp">... </span><span class="c1"># equivaut à f(0, 1, 2, d=3, e=4)</span>
+<span class="go">0 1 2 3</span>
+<span class="go">()</span>
+<span class="go">{&#39;e&#39;: 4}</span>
+</pre></div>
+</div>
+<p>On remarquera que les variables <code class="docutils literal"><span class="pre">args</span></code> et <code class="docutils literal"><span class="pre">kwd</span></code> à l&#8217;intérieur de la fonction <code class="docutils literal"><span class="pre">f</span></code> sont différentes de celles que l&#8217;on a séparées (liste et dct dans cet example).</p>
+<p>Il est de toute façon possible de séparer plusieurs listes ou dictionnaires :</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="o">*</span><span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="o">*</span><span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+<span class="go">0 1 2 0 1 2</span>
+</pre></div>
+</div>
+<p>Quelques remarques :</p>
+<ul>
+<li><p class="first">Il ne faut par hésiter à utiliser des arguments par défaut (et c&#8217;est mieux que des variables globales)</p>
+</li>
+<li><p class="first">Lorsque l&#8217;on appelle une fonction, il ne faut pas hésiter à nommer les arguments, même si c&#8217;est inutile et que c&#8217;est plus long à taper. Comparez</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">scope</span><span class="o">.</span><span class="n">configure_channel</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.03</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">scope</span><span class="o">.</span><span class="n">configure_channel</span><span class="p">(</span><span class="n">channel_name</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mf">0.03</span><span class="p">,</span> <span class="n">impedance</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="variable-locale-globale">
+<h3>3.2.2. Variable locale/globale<a class="headerlink" href="#variable-locale-globale" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Les variables que l&#8217;on crée dans une fonction sont locale, c&#8217;est à dire indépendante d&#8217;une variable extérieur à la fonction qui porte le même nom.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">f</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="n">x</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span>
+<span class="go">3</span>
+</pre></div>
+</div>
+<p>A l&#8217;intérieur d&#8217;une fonction, une variable est soit locale soit globale</p>
+</div>
+<div class="section" id="decorateur">
+<h3>3.2.3. Décorateur<a class="headerlink" href="#decorateur" title="Lien permanent vers ce titre">¶</a></h3>
+<dl class="docutils">
+<dt>Exemple</dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">* fonction qui vérifie les arguments.</span><dd><ul class="first last simple">
+<li>Vectorize pour les listes</li>
+</ul>
+</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="les-boucles">
+<h2>3.3. Les boucles<a class="headerlink" href="#les-boucles" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Pour sortir d&#8217;une boucle on peut utiliser l&#8217;instruction <code class="docutils literal"><span class="pre">break</span></code>, pour passer à l&#8217;itération suivante l&#8217;instruction <code class="docutils literal"><span class="pre">continue</span></code>. Si un boucle se finit normalement, il est alors possible d&#8217;excuter un bloc d&#8217;instruction dans un <code class="docutils literal"><span class="pre">else</span></code>. Voici un example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">affiche_si_premier</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="n">i</span><span class="o">=</span><span class="mi">2</span>
+    <span class="k">while</span> <span class="n">i</span><span class="o">**</span><span class="mi">2</span><span class="o">&lt;=</span><span class="n">n</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">n</span><span class="o">%</span><span class="n">i</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> n&#39;est pas premier&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+            <span class="k">break</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> est premier&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="section" id="boucle-for">
+<h3>3.3.1. Boucle for<a class="headerlink" href="#boucle-for" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Nous avons vu qu&#8217;il est possible de faire des boucles for sur des listes, des chaînes de caractères, des tuples. Il existe un concept général que l&#8217;on appelle itérateur. On va dire que les listes, chaînes de carctères et les tuples sont des itérateurs. Un itérateur est un objet qui possède une méthode <code class="docutils literal"><span class="pre">__iter__</span></code> laquelle va renvoyer un objet (souvent le même) qui possède une méthode <code class="docutils literal"><span class="pre">__next__</span></code>. On le verra plus en détail dans la partie orientée objet. Par exemple</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">l</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">l</span><span class="o">.</span><span class="n">__iter__</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">__next__</span><span class="p">()</span>
+<span class="go">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">__next__</span><span class="p">()</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">__next__</span><span class="p">()</span>
+<span class="go">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">__next__</span><span class="p">()</span>
+<span class="gt">Traceback (most recent call last):</span>
+  File <span class="nb">&quot;&lt;stdin&gt;&quot;</span>, line <span class="m">1</span>, in <span class="n">&lt;module&gt;</span>
+<span class="gr">StopIteration</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="generateurs">
+<span id="generateur"></span><h3>3.3.2. Générateurs<a class="headerlink" href="#generateurs" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Les générateurs sont utilisés pour faciliter la création d&#8217;itérateur. Il s&#8217;agit d&#8217;un fonction qui va renvoyer une série de résultat au lieu d&#8217;une simple valeur. On utilise la mot clé <code class="docutils literal"><span class="pre">yield</span></code>. Un générateur ne pourra utiliser de <code class="docutils literal"><span class="pre">return</span></code> :</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">my_range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="gp">... </span>    <span class="k">while</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">n</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="k">yield</span> <span class="n">i</span>
+<span class="gp">... </span>        <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+</pre></div>
+</div>
+<p>Une nouvelle valeur est renvoyée à chaque fois que yield est appelé :</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">my_range</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+<span class="go">&lt;class &#39;generator&#39;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span><span class="o">.</span><span class="n">__next__</span><span class="p">()</span>
+<span class="go">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span><span class="o">.</span><span class="n">__next__</span><span class="p">()</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span><span class="o">.</span><span class="n">__next__</span><span class="p">()</span>
+<span class="go">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span><span class="o">.</span><span class="n">__next__</span><span class="p">()</span>
+<span class="gt">Traceback (most recent call last):</span>
+  File <span class="nb">&quot;&lt;stdin&gt;&quot;</span>, line <span class="m">1</span>, in <span class="n">&lt;module&gt;</span>
+<span class="gr">StopIteration</span>
+</pre></div>
+</div>
+<p>Dans le cas où l&#8217;on veut transformer une liste en une autre liste, cette méthode permet d&#8217;éviter de créer explicitement la liste. Par exemple</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">carre</span><span class="p">(</span><span class="n">l</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">elm</span> <span class="ow">in</span> <span class="n">l</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="k">yield</span> <span class="n">elm</span><span class="o">**</span><span class="mi">2</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">elm</span> <span class="ow">in</span> <span class="n">carre</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">)):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">elm</span><span class="p">)</span>
+<span class="go">0</span>
+<span class="go">1</span>
+<span class="go">4</span>
+<span class="go">9</span>
+</pre></div>
+</div>
+<p>Cette méthode permet aussi de parcourir les éléments d&#8217;une structure compliquée, comme un système 2D ou un arbre</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">indices_tableau_2D</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="n">i</span><span class="p">,</span><span class="n">j</span>
+</pre></div>
+</div>
+<p>Et une structure en arbre. Affiche l&#8217;ensemble des fichiers d&#8217;un repertoire ayant une extension donnée:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+
+<span class="k">def</span> <span class="nf">parcourt_repertoire</span><span class="p">(</span><span class="n">repertoire</span><span class="p">,</span> <span class="n">ext</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">elm</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">repertoire</span><span class="p">):</span>
+        <span class="n">elm_abs_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">repertoire</span><span class="p">,</span> <span class="n">elm</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">elm_path</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">parcourt_repertoire</span><span class="p">(</span><span class="n">elm_abs_path</span><span class="p">,</span> <span class="n">ext</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="n">filename</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="n">elm_abs_path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">ext</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="n">elm_abs_path</span>
+
+<span class="nb">list</span><span class="p">(</span><span class="n">parcourt_repertoire</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="s1">&#39;.py&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="admonition-exercice admonition">
+<p class="first admonition-title">Exercice</p>
+<p class="last">Faire une fonction indices_tableau qui prend n argument et parcourt tous les indices de ce tableau nD. On utilisera des tuples pour les indices et on fera quelque chose de recursif (pour parcourir un tableau nD, on parcours un tableau (n-1)D le nombre de fois qu&#8217;il faut).</p>
+</div>
+</div>
+</div>
+<div class="section" id="les-exceptions">
+<h2>3.4. Les exceptions<a class="headerlink" href="#les-exceptions" title="Lien permanent vers ce titre">¶</a></h2>
+<ul>
+<li><p class="first">Expressions :</p>
+</li>
+<li><dl class="first docutils">
+<dt>statements :</dt>
+<dd><ul class="first last simple">
+<li>Les fonctions, variable locale/globale. On sort quand on veut. Exemple : nombre premier -&gt; pas de else</li>
+<li>Les boucles : Pour les boucles, les générateurs (produit cartésien, avec le parcour récurssif d&#8217;un repertoire)</li>
+<li>Les exceptions</li>
+<li>les tests if then else.</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<div class="toctree-wrapper compound">
+<ul class="simple">
+</ul>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table des Matières</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">3. Eléments du langage Python</a><ul>
+<li><a class="reference internal" href="#expression-en-python">3.1. Expression en Python</a></li>
+<li><a class="reference internal" href="#creer-des-fonctions">3.2. Créer des fonctions</a><ul>
+<li><a class="reference internal" href="#arguments-d-une-fonction">3.2.1. Arguments d&#8217;une fonction</a></li>
+<li><a class="reference internal" href="#variable-locale-globale">3.2.2. Variable locale/globale</a></li>
+<li><a class="reference internal" href="#decorateur">3.2.3. Décorateur</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#les-boucles">3.3. Les boucles</a><ul>
+<li><a class="reference internal" href="#boucle-for">3.3.1. Boucle for</a></li>
+<li><a class="reference internal" href="#generateurs">3.3.2. Générateurs</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#les-exceptions">3.4. Les exceptions</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="../data_type/index.html" title="Chapitre précédent">2. Les types de données en Python</a></li>
+      <li>Next: <a href="../objets/index.html" title="Chapitre suivant">4. Programmation orientée objet</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>Cette page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/langage/index.txt"
+            rel="nofollow">Montrer le code source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Recherche rapide</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, Pierre Cladé.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+      |
+      <a href="../_sources/langage/index.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,18 @@
+
+#######################
+Python pour la physique
+#######################
+
+Steve Jobs : *I think that everybody in this country should learn how to program a computer -- because it teaches you how to think*
+
+
+.. toctree::
+   :maxdepth: 2
+   :numbered:
+
+   prise_en_main/index
+   data_type/index
+   langage/index
+   objets/index
+   projets/index
+   outils_pour_la_science/index

@@ -1,0 +1,7 @@
+=========================
+Gérer un projet en python
+=========================
+
+.. toctree::
+   :maxdepth: 2
+

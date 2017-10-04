@@ -1,0 +1,77 @@
+=======================
+Un avant goût de Python
+=======================
+
+Exemple
+=======
+
+Voici un premier exemple de code Python. L'objectif de ce code est de calculer 
+la valeur de :math:`e^x`. Nous allons utiliser le développement limité suivant:
+
+.. math::
+    e^x = \sum_{n=0}^{\infty} \frac{x^n}{n!}
+
+Pour cela, nous allons calculer la somme jusqu'à une valeur :math:`n_\mathrm{max}` de :math:`n`
+telle que :math:`x^n/n!<\epsilon`. La variable :math:`\epsilon` determinera la précision du calcul 
+(plus :math:`\epsilon` est petit, meilleure est la précision). 
+
+Le code Python permettant de faire ce calcul est le suivant ::
+
+    x = 3.14
+    epsilon = 1E-6
+    resultat = 0
+    n=1
+    terme=1 # Valeur initiale de terme de la boucle
+    while terme>epsilon :
+        resultat = resultat + terme
+        terme  = terme * x/n
+        n = n+1
+    print(resultat)
+
+Ce code ne devrait pas poser de problème au lecteur ayant déjà eu des cours de programmation. Une particularité
+du langage Python est présente : dans la boucle ``while``, le bloc d'instruction qui est répété est determiné par l'indentation
+(espaces au début de chaque ligne). Python est donc différent de la pluspart des langages qui utilisent une structure
+du type ``begin-end`` ou bien des accolades pour determiner le bloc d'iunstruction qui est répété. En python
+un bloc d'instruction est repéré par les ``:``  et un ensemble de lignes indenté identiquement. 
+
+Dans un éditeur de texte copier-coller le code ci-dessus dans un fichier (``exponetielle.py``) et executer le dans un shell python (lancer ``ipython`` puis
+``%run exponentielle.py``.
+
+
+Les fonctions
+=============
+
+Le code suivant peut être mis à l'intérieur d'une fonction ::
+
+    def exp(x, epsilon=1e-6): # epsilon vaut par défaut 1e-6
+        """ Renvoie e a la puissance x """
+        resultat = 0
+        n=1
+        terme=1 # Valeur initiale du terme de la boucle
+        while terme>epsilon : 
+            resultat = resultat + terme
+            terme  = terme * x/n
+            n = n+1
+        return resultat
+
+- La définition d'une fonction se fait à l'aide du mot clé ``def`` suivit du nom de la fonction et des arguments. 
+
+- La chaîne de caractère qui suit la définition d'une fonction permet de documenter la fonction. Il s'agit 
+  de la documentation publique de la fonction, accessible par l'utilisateur via la commande ``help nom_de_la_fonction``. Il ne faut 
+  la confondre avec les commentaires (qui commencent par un ``#``) et qui aide à comprendre le contenu du code.
+
+Ecrire le code suivant dans le fichier ``exponentielle.py`` à la place du précédent. Dans le shell ipython executer le fichier. Que ce passe-t-il? 
+Le programme charge la fonction dans le mémoire. Ensuite, il faut executer la fonction. Par exemple à l'aide de la commande ``exp(2.17)``. 
+
+
+- Lorsque l'argument est suivit d'une valeur (``epsilon=1e-6``) cette valeur est utilisée par défaut. On peut alors
+  appeler la fonction de trois façons différentes ::
+
+    print exp(2.17)
+    print exp(2.17, 1e-9)
+    print exp(2.17, epsilon=1e-10)
+
+  La dernière façon est particulièrement utile lorsqu'il y a beaucoup d'arguments ayant une valeur par défaut. 
+
+
+

@@ -1,0 +1,25 @@
+--------------------
+Qu'est ce que Python
+--------------------
+
+L'objectif d'un langage informatique est de décrire un ensemble
+d'instructions que l'on souhaite voir exécuter par un ordinateur. 
+Le langage que comprend l'ordinateur (l'assembleur) est un langage
+trop primitif pour être simple et rapide à utiliser. C'est pour celà
+qu'il existe des langages dits évolués. 
+
+Parmis ces langages on peut distinguer les langages compilés (par
+exemple, le C, le Fortran, le C++, ...) et les langages interprétés
+(basic, python, matlab, scilab, ...). Dans le premier cas, le
+programme est entièrement traduit (compilé) pour être exécuté
+directement par le processeur (on peut prendre l'analogie d'un livre
+traduit entièrement dans une autre langue). Les langages interprétés
+sont traduits au fur et à mesure par un interpréteur (pour continuer
+l'analogie, il s'agit d'un traducteur qui traduit les phrases au fur
+et à mesure). Les langages interprétés ont la réputations d'être plus
+lent, cependant, il sont bien plus facile à utiliser : on peut faire
+une modification sans avoir à recompiler, ou simplement voir le
+résultat de chaque instruction au fur et à mesure de l'exécution.
+
+Le langage Python est un langage interprété. Il a été créé en 1995 avec pour objectif d'être un langage informatique général (par opposition aux langages spécialisés pour effectuer un type de tache bien précis). Python fait parti des dix langages informatiques les plus utilisés au monde. Python est devenu au cours des années un langage interprété de premier choix. Il est présent dans beaucoup de projet open source (par exemple LibreOffice). TODO....
+
