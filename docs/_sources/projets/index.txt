@@ -2,6 +2,13 @@
 Gérer un projet en python
 =========================
 
+Ce chapitre à pour but d'expliquer quelques concepts et outils utils pour créer un projet en Python. La première partie explique la notion de modules et de package en Python. La seconde comment faire une documentation pour un projet et la dernière partie parle des tests unittaires.
+
+
 .. toctree::
    :maxdepth: 2
 
+   package
+   documentation
+   test_unitaire
+   conclusion

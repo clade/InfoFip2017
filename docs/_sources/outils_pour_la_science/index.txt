@@ -2,9 +2,10 @@
 Outils pour la science
 ======================
 
-.. _numpy:
+.. toctree::
+    :maxdepth: 2
 
-Numpy
-=====
+    numpy
+    graphique  
 
 

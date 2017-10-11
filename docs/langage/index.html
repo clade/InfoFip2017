@@ -169,13 +169,147 @@
 </div>
 <div class="section" id="decorateur">
 <h3>3.2.3. Décorateur<a class="headerlink" href="#decorateur" title="Lien permanent vers ce titre">¶</a></h3>
-<dl class="docutils">
-<dt>Exemple</dt>
- <span class="classifier-delimiter">:</span> <span class="classifier">* fonction qui vérifie les arguments.</span><dd><ul class="first last simple">
-<li>Vectorize pour les listes</li>
-</ul>
-</dd>
-</dl>
+<p>Il arrive fréquement que l&#8217;on veuille modifier ou rajouter des fonctionnalité à une fonction. Pour cela, il est possible en Python de créer une fonction qui renvoie une nouvelle fonction. C&#8217;est ce que l&#8217;on appelle in <em>décorateur</em>. Prenons l&#8217;exemple de cette fonctions :</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">trace_fonction</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">__name__</span>
+        <span class="n">arg_str</span> <span class="o">=</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="nb">str</span><span class="p">(</span><span class="n">elm</span><span class="p">)</span> <span class="k">for</span> <span class="n">elm</span> <span class="ow">in</span> <span class="n">args</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Appel de la fonction </span><span class="si">{name}</span><span class="s1">(</span><span class="si">{arg_str}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="nb">locals</span><span class="p">()))</span>
+        <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">wrapper</span>
+
+<span class="kn">from</span> <span class="nn">math</span> <span class="k">import</span> <span class="n">sin</span>
+<span class="n">sin</span> <span class="o">=</span> <span class="n">trace_fonction</span><span class="p">(</span><span class="n">sin</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Ce qui donne :</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sin</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">Appel de la fonction sin(4)</span>
+<span class="go">-0.7568024953079282</span>
+</pre></div>
+</div>
+<p>Notez que dans la fonction <code class="docutils literal"><span class="pre">wrapper</span></code>, le variable <code class="docutils literal"><span class="pre">f</span></code> est globale tout en étant locale dans <code class="docutils literal"><span class="pre">trace_fonction</span></code>.</p>
+<p>Lorsque l&#8217;on définit la fonction soit même, on peut utiliser une syntaxe particulière : avant la ligne contenant mot clé <code class="docutils literal"><span class="pre">def</span></code>, on indique le nom du décorateur précédé de <code class="docutils literal"><span class="pre">&#64;</span></code>. Par exemple :</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="nd">@trace_fonction</span>
+<span class="k">def</span> <span class="nf">difference</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">-</span> <span class="n">y</span>
+</pre></div>
+</div>
+<p>Ce qui permet de s&#8217;amuser, et savoir comment python trie une liste:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">functools</span> <span class="k">import</span> <span class="n">cmp_to_key</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">liste</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">liste</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">cmp_to_key</span><span class="p">(</span><span class="n">difference</span><span class="p">))</span>
+<span class="go">Appel de la fonction difference(4, 2)</span>
+<span class="go">Appel de la fonction difference(6, 4)</span>
+<span class="go">Appel de la fonction difference(3, 6)</span>
+<span class="go">Appel de la fonction difference(3, 4)</span>
+<span class="go">Appel de la fonction difference(3, 2)</span>
+<span class="go">Appel de la fonction difference(7, 4)</span>
+<span class="go">Appel de la fonction difference(7, 6)</span>
+<span class="go">Appel de la fonction difference(3, 4)</span>
+<span class="go">Appel de la fonction difference(3, 3)</span>
+</pre></div>
+</div>
+<p>Un exemple de décorateur est la fonction <code class="docutils literal"><span class="pre">vectorize</span></code> du module <code class="docutils literal"><span class="pre">numpy</span></code>, qui permet d&#8217;adapter n&#8217;importe quelle fonction à un tableau :</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="nd">@np</span><span class="o">.</span><span class="n">vectorize</span>
+<span class="k">def</span> <span class="nf">my_sqrt</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">x</span><span class="o">&gt;=</span><span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="mi">0</span><span class="n">J</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">)</span><span class="o">*</span><span class="mi">1</span><span class="n">J</span>
+</pre></div>
+</div>
+<div class="admonition-exercice admonition">
+<p class="first admonition-title">Exercice</p>
+<p class="last">Créer une décorateur list_vectorize qui fait la même chose pour des listes</p>
+</div>
+<p>On peut aller un étape plus loin, ce que l&#8217;on met après l&#8217;arobase est n&#8217;importe quelle expression qui renvoie un décorateur. Par exemple, cela peut-être le résultat de l&#8217;appel d&#8217;une fonction. Par exemple :</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">check_arg_type</span><span class="p">(</span><span class="n">arg_type</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">decorateur</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">arg_type</span><span class="p">),</span> <span class="s1">&#39;Argument should of type </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">arg_type</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">wrapper</span>
+    <span class="k">return</span> <span class="n">decorateur</span>
+
+<span class="nd">@check_arg_type</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">fibonacci</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">n</span><span class="o">&lt;=</span><span class="mi">1</span><span class="p">:</span> <span class="k">return</span> <span class="n">n</span>
+    <span class="k">return</span> <span class="n">fibonacci</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">fibonacci</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Ce qui donne :</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fibonacci</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="go">5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fibonacci</span><span class="p">(</span><span class="mf">5.4</span><span class="p">)</span>  
+<span class="go">AssertionError: Argument should of type &lt;class &#39;int&#39;&gt;</span>
+</pre></div>
+</div>
+<p>On peut mettre plusieurs décorateurs :</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="nd">@check_arg_type</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<span class="nd">@trace_fonction</span>
+<span class="k">def</span> <span class="nf">fibonacci</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">n</span><span class="o">&lt;=</span><span class="mi">1</span><span class="p">:</span> <span class="k">return</span> <span class="n">n</span>
+    <span class="k">return</span> <span class="n">fibonacci</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">fibonacci</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Ce qui donne :</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fibonacci</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="go">Appel de la fonction fibonacci(5)</span>
+<span class="go">Appel de la fonction fibonacci(4)</span>
+<span class="go">Appel de la fonction fibonacci(3)</span>
+<span class="go">Appel de la fonction fibonacci(2)</span>
+<span class="go">Appel de la fonction fibonacci(1)</span>
+<span class="go">Appel de la fonction fibonacci(0)</span>
+<span class="go">Appel de la fonction fibonacci(1)</span>
+<span class="go">Appel de la fonction fibonacci(2)</span>
+<span class="go">Appel de la fonction fibonacci(1)</span>
+<span class="go">Appel de la fonction fibonacci(0)</span>
+<span class="go">Appel de la fonction fibonacci(3)</span>
+<span class="go">Appel de la fonction fibonacci(2)</span>
+<span class="go">Appel de la fonction fibonacci(1)</span>
+<span class="go">Appel de la fonction fibonacci(0)</span>
+<span class="go">Appel de la fonction fibonacci(1)</span>
+<span class="go">5</span>
+</pre></div>
+</div>
+<p>Evidement, on voit dans ce cas, que la façon de procéder n&#8217;est pas efficace, on peut alors décider de mettre en cache le résultat :</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">cached</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+    <span class="n">memory</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">memory</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="n">memory</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">wrapper</span>
+
+<span class="nd">@cached</span>
+<span class="nd">@check_arg_type</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<span class="nd">@trace_fonction</span>
+<span class="k">def</span> <span class="nf">fibonacci</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">n</span><span class="o">&lt;=</span><span class="mi">1</span><span class="p">:</span> <span class="k">return</span> <span class="n">n</span>
+    <span class="k">return</span> <span class="n">fibonacci</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">fibonacci</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Ce qui donne:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fibonacci</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="go">Appel de la fonction fibonacci(5)</span>
+<span class="go">Appel de la fonction fibonacci(4)</span>
+<span class="go">Appel de la fonction fibonacci(3)</span>
+<span class="go">Appel de la fonction fibonacci(2)</span>
+<span class="go">Appel de la fonction fibonacci(1)</span>
+<span class="go">Appel de la fonction fibonacci(0)</span>
+<span class="go">5</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">La fonction <a class="reference external" href="https://docs.python.org/3.6/library/functools.html#functools.lru_cache" title="(disponible dans Python v3.6)"><code class="xref py py-func docutils literal"><span class="pre">functools.lru_cache</span></code></a> du module <a class="reference external" href="https://docs.python.org/3.6/library/functools.html#module-functools" title="(disponible dans Python v3.6)"><code class="xref py py-mod docutils literal"><span class="pre">functools</span></code></a> effectue cette tache.</p>
+</div>
+<div class="admonition-exercice admonition">
+<p class="first admonition-title">Exercice</p>
+<p class="last">Modifiez le décorateur <code class="docutils literal"><span class="pre">check_arg_type</span></code> pour qu&#8217;il fonctionne avec un nombre arbitraire d&#8217;arguments.</p>
+</div>
 </div>
 </div>
 <div class="section" id="les-boucles">
@@ -280,21 +414,67 @@
 </div>
 <div class="section" id="les-exceptions">
 <h2>3.4. Les exceptions<a class="headerlink" href="#les-exceptions" title="Lien permanent vers ce titre">¶</a></h2>
-<ul>
-<li><p class="first">Expressions :</p>
-</li>
-<li><dl class="first docutils">
-<dt>statements :</dt>
-<dd><ul class="first last simple">
-<li>Les fonctions, variable locale/globale. On sort quand on veut. Exemple : nombre premier -&gt; pas de else</li>
-<li>Les boucles : Pour les boucles, les générateurs (produit cartésien, avec le parcour récurssif d&#8217;un repertoire)</li>
-<li>Les exceptions</li>
-<li>les tests if then else.</li>
-</ul>
-</dd>
-</dl>
-</li>
-</ul>
+<p>Il arrive souvent lors de l&#8217;exécution d&#8217;un programme qu&#8217;une erreur apparaisse (par exemple prendre la racine carré d&#8217;un nombre négatif). Dans ce cas, Python arrête l&#8217;exécution du programme et affiche l&#8217;erreur. Ce comportement peut modifié : il est en effet possible de stopper la propagation de l&#8217;erreur. Ceci se fait à l&#8217;aide la structure <code class="docutils literal"><span class="pre">try</span></code> <code class="docutils literal"><span class="pre">except</span></code></p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">math</span> <span class="k">import</span> <span class="n">sqrt</span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="mi">0</span>
+</pre></div>
+</div>
+<p>Dans le cas où une fonction que l&#8217;on a créée ne peut pas être exécutée correctement, il est possible de créer et renvoyer une erreur.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">triangle_existe</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">):</span>
+    <span class="sd">u&quot;&quot;&quot; Teste si le triangle de côté a,b,c existe &quot;&quot;&quot;</span>
+    <span class="k">pass</span>
+
+<span class="k">def</span> <span class="nf">aire_triangle</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">):</span>
+    <span class="sd">u&quot;&quot;&quot; Calcule l&#39;aire d&#39;un triangle de côté a,b,c &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">triangle_existe</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">u&quot;Le triangle de côté </span><span class="si">{0}</span><span class="s2">,</span><span class="si">{1}</span><span class="s2">,</span><span class="si">{2}</span><span class="s2"> n&#39;existe pas&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">))</span>
+    <span class="k">pass</span>
+</pre></div>
+</div>
+<p>Il existe plusieurs type d&#8217;erreur générique (<code class="docutils literal"><span class="pre">ValueError</span></code>, <code class="docutils literal"><span class="pre">NameError</span></code>, <code class="docutils literal"><span class="pre">SyntaxError</span></code>). Dans la partie orientée objet, nous verrons comment créer son propre type d&#8217;erreur.</p>
+<p>Un cas fréquent consiste à modifier attraper une erreur et ensuite à renvoyer une nouvelle erreur. Par exemple, la formule de Héron permet de calculer l&#8217;aire d&#8217;un triangle
+en connaissant uniquement la longueur des trois côtés a,b et c.</p>
+<div class="math">
+\[A = \sqrt{s(s-a)(s-b)(s-c)}\]</div>
+<p>où s est le demi-périmètre</p>
+<div class="math">
+\[s = \frac{1}{2}\left(a+b+c\right)\]</div>
+<p>Dans le cas où le triangle n&#8217;existe par, l&#8217;argument de la racine carré est négatif. Le module <code class="docutils literal"><span class="pre">math</span></code> va renvoyer une <code class="docutils literal"><span class="pre">ValueError</span></code>. Il est possible de modifier cette erreur et de renvoyer un message plus explicite :</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">math</span> <span class="k">import</span> <span class="n">sqrt</span>
+
+<span class="k">def</span> <span class="nf">aire_triangle</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span><span class="o">+</span><span class="n">b</span><span class="o">+</span><span class="n">c</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">s</span><span class="o">*</span><span class="p">(</span><span class="n">s</span><span class="o">-</span><span class="n">a</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">s</span><span class="o">-</span><span class="n">b</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">s</span><span class="o">-</span><span class="n">c</span><span class="p">))</span>
+    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Le triangle de côtés </span><span class="si">{a}</span><span class="s2">, </span><span class="si">{b}</span><span class="s2"> et </span><span class="si">{c}</span><span class="s2"> n&#39;existe pas&quot;</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">c</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Ce qui donne :</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">aire_triangle</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="go">6.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">aire_triangle</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span> 
+<span class="go">ValueError: Le triangle de côtés 1, 1 et 10 n&#39;existe pas</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Il est plus efficace d&#8217;utiliser un <code class="docutils literal"><span class="pre">try</span> <span class="pre">...</span> <span class="pre">except</span></code> que de faire un test préalable (qui peut parfois être compliqué). C&#8217;est un comportement non-intuitif. En Python, il est plus efficace de traverser la route les yeux fermé et de voir ce qu&#8217;on fait si on a un accident que de regarder si il y a une voiture qui passe avant de traverser. Cette façon de procéder peut être indispensable dans certaine situation. Par exemple :</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">try</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;un_fichier_qui_n_existe_pas&#39;</span><span class="p">)</span>
+<span class="gp">... </span><span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Erreur : entrez un nouveau fichier&#39;</span><span class="p">)</span>
+<span class="go">Erreur : entrez un nouveau fichier</span>
+</pre></div>
+</div>
+<p class="last">En effet, si on teste l&#8217;existence du fichier, il est toujours possible (bien que peu probable) que le système d&#8217;exploitation suprime le fichier entre le test et l&#8217;ouverture du fichier.</p>
+</div>
 <div class="toctree-wrapper compound">
 <ul class="simple">
 </ul>

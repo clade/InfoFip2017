@@ -141,8 +141,160 @@ A l'intérieur d'une fonction, une variable est soit locale soit globale
 Décorateur
 ----------
 
-Exemple : * fonction qui vérifie les arguments. 
-          * Vectorize pour les listes
+Il arrive fréquement que l'on veuille modifier ou rajouter des fonctionnalité à une fonction. Pour cela, il est possible en Python de créer une fonction qui renvoie une nouvelle fonction. C'est ce que l'on appelle in *décorateur*. Prenons l'exemple de cette fonctions : 
+
+.. testcode::
+
+    def trace_fonction(f):
+        def wrapper(*args):
+            name = f.__name__
+            arg_str = ', '.join((str(elm) for elm in args))
+            print('Appel de la fonction {name}({arg_str})'.format(**locals()))
+            return f(*args)
+        return wrapper
+
+    from math import sin
+    sin = trace_fonction(sin)
+
+Ce qui donne :
+
+    >>> sin(4)
+    Appel de la fonction sin(4)
+    -0.7568024953079282
+
+Notez que dans la fonction ``wrapper``, le variable ``f`` est globale tout en étant locale dans ``trace_fonction``.
+
+Lorsque l'on définit la fonction soit même, on peut utiliser une syntaxe particulière : avant la ligne contenant mot clé ``def``, on indique le nom du décorateur précédé de ``@``. Par exemple : 
+
+.. testcode::
+
+    @trace_fonction
+    def difference(x, y):
+        return x - y
+
+Ce qui permet de s'amuser, et savoir comment python trie une liste: 
+
+    >>> from functools import cmp_to_key
+    >>> liste = [2, 4, 6, 3, 7, 3]
+    >>> liste.sort(key=cmp_to_key(difference))
+    Appel de la fonction difference(4, 2)
+    Appel de la fonction difference(6, 4)
+    Appel de la fonction difference(3, 6)
+    Appel de la fonction difference(3, 4)
+    Appel de la fonction difference(3, 2)
+    Appel de la fonction difference(7, 4)
+    Appel de la fonction difference(7, 6)
+    Appel de la fonction difference(3, 4)
+    Appel de la fonction difference(3, 3)
+
+
+Un exemple de décorateur est la fonction ``vectorize`` du module ``numpy``, qui permet d'adapter n'importe quelle fonction à un tableau : 
+
+.. testcode::
+
+    import math
+    import numpy as np
+
+    @np.vectorize
+    def my_sqrt(x):
+        if x>=0:
+            return math.sqrt(x) + 0J
+        else:
+            return math.sqrt(-x)*1J
+
+.. exercice:: 
+
+    Créer une décorateur list_vectorize qui fait la même chose pour des listes
+
+On peut aller un étape plus loin, ce que l'on met après l'arobase est n'importe quelle expression qui renvoie un décorateur. Par exemple, cela peut-être le résultat de l'appel d'une fonction. Par exemple :
+
+.. testcode::
+
+    def check_arg_type(arg_type):
+        def decorateur(f):
+            def wrapper(x):
+                assert isinstance(x, arg_type), 'Argument should of type {}'.format(str(arg_type))
+                return f(x)
+            return wrapper 
+        return decorateur
+
+    @check_arg_type(int)
+    def fibonacci(n):
+        if n<=1: return n
+        return fibonacci(n-1) + fibonacci(n-2)
+
+Ce qui donne : 
+
+    >>> fibonacci(5)
+    5
+    >>> fibonacci(5.4)  # doctest: +SKIP
+    AssertionError: Argument should of type <class 'int'>
+
+On peut mettre plusieurs décorateurs : 
+
+.. testcode::
+
+    @check_arg_type(int)
+    @trace_fonction
+    def fibonacci(n):
+        if n<=1: return n
+        return fibonacci(n-1) + fibonacci(n-2)
+
+Ce qui donne : 
+
+    >>> fibonacci(5)
+    Appel de la fonction fibonacci(5)
+    Appel de la fonction fibonacci(4)
+    Appel de la fonction fibonacci(3)
+    Appel de la fonction fibonacci(2)
+    Appel de la fonction fibonacci(1)
+    Appel de la fonction fibonacci(0)
+    Appel de la fonction fibonacci(1)
+    Appel de la fonction fibonacci(2)
+    Appel de la fonction fibonacci(1)
+    Appel de la fonction fibonacci(0)
+    Appel de la fonction fibonacci(3)
+    Appel de la fonction fibonacci(2)
+    Appel de la fonction fibonacci(1)
+    Appel de la fonction fibonacci(0)
+    Appel de la fonction fibonacci(1)
+    5
+
+Evidement, on voit dans ce cas, que la façon de procéder n'est pas efficace, on peut alors décider de mettre en cache le résultat : 
+
+.. testcode::
+
+    def cached(f):
+        memory = {}
+        def wrapper(x):
+            return memory.get(x, None) or memory.setdefault(x, f(x))
+        return wrapper
+
+    @cached
+    @check_arg_type(int)
+    @trace_fonction
+    def fibonacci(n):
+        if n<=1: return n
+        return fibonacci(n-1) + fibonacci(n-2)
+
+Ce qui donne:
+
+    >>> fibonacci(5)
+    Appel de la fonction fibonacci(5)
+    Appel de la fonction fibonacci(4)
+    Appel de la fonction fibonacci(3)
+    Appel de la fonction fibonacci(2)
+    Appel de la fonction fibonacci(1)
+    Appel de la fonction fibonacci(0)
+    5
+
+.. note::
+
+    La fonction :func:`functools.lru_cache` du module :mod:`functools` effectue cette tache. 
+
+.. exercice::
+
+    Modifiez le décorateur ``check_arg_type`` pour qu'il fonctionne avec un nombre arbitraire d'arguments.
 
 Les boucles
 ===========
@@ -251,17 +403,77 @@ Et une structure en arbre. Affiche l'ensemble des fichiers d'un repertoire ayant
 Les exceptions
 ==============
 
+Il arrive souvent lors de l'exécution d'un programme qu'une erreur apparaisse (par exemple prendre la racine carré d'un nombre négatif). Dans ce cas, Python arrête l'exécution du programme et affiche l'erreur. Ce comportement peut modifié : il est en effet possible de stopper la propagation de l'erreur. Ceci se fait à l'aide la structure ``try`` ``except`` ::
 
-* Expressions : 
+    from math import sqrt
 
-* statements : 
-    * Les fonctions, variable locale/globale. On sort quand on veut. Exemple : nombre premier -> pas de else
+    a = -1
+    try:
+        b = sqrt(a)
+    except ValueError:
+        b = 0
 
-    * Les boucles : Pour les boucles, les générateurs (produit cartésien, avec le parcour récurssif d'un repertoire)
+Dans le cas où une fonction que l'on a créée ne peut pas être exécutée correctement, il est possible de créer et renvoyer une erreur. ::
 
-    * Les exceptions
+    def triangle_existe(a,b,c):
+        u""" Teste si le triangle de côté a,b,c existe """
+        pass
 
-    * les tests if then else. 
+    def aire_triangle(a,b,c):
+        u""" Calcule l'aire d'un triangle de côté a,b,c """
+        if not triangle_existe(a,b,c):
+            raise ValueError(u"Le triangle de côté {0},{1},{2} n'existe pas".format(a,b,c))
+        pass
+
+Il existe plusieurs type d'erreur générique (``ValueError``, ``NameError``, ``SyntaxError``). Dans la partie orientée objet, nous verrons comment créer son propre type d'erreur. 
+
+Un cas fréquent consiste à modifier attraper une erreur et ensuite à renvoyer une nouvelle erreur. Par exemple, la formule de Héron permet de calculer l'aire d'un triangle
+en connaissant uniquement la longueur des trois côtés a,b et c. 
+
+.. math :: 
+
+   A = \sqrt{s(s-a)(s-b)(s-c)}
+
+où s est le demi-périmètre 
+
+.. math ::
+
+   s = \frac{1}{2}\left(a+b+c\right)
+
+Dans le cas où le triangle n'existe par, l'argument de la racine carré est négatif. Le module ``math`` va renvoyer une ``ValueError``. Il est possible de modifier cette erreur et de renvoyer un message plus explicite : 
+
+.. testcode::
+
+    from math import sqrt
+
+    def aire_triangle(a, b, c):
+        s = (a+b+c)/2
+        try:
+            return sqrt(s*(s-a)*(s-b)*(s-c))
+        except ValueError:
+            msg = "Le triangle de côtés {a}, {b} et {c} n'existe pas"
+            raise ValueError(msg.format(a=a, b=b, c=c))
+
+Ce qui donne :
+
+    >>> aire_triangle(3, 4, 5)
+    6.0
+    >>> aire_triangle(1, 1, 10) # doctest: +SKIP
+    ValueError: Le triangle de côtés 1, 1 et 10 n'existe pas
+
+.. note:: 
+
+    Il est plus efficace d'utiliser un ``try ... except`` que de faire un test préalable (qui peut parfois être compliqué). C'est un comportement non-intuitif. En Python, il est plus efficace de traverser la route les yeux fermé et de voir ce qu'on fait si on a un accident que de regarder si il y a une voiture qui passe avant de traverser. Cette façon de procéder peut être indispensable dans certaine situation. Par exemple :
+
+        >>> try:
+        ...     open('un_fichier_qui_n_existe_pas')
+        ... except FileNotFoundError:
+        ...     print('Erreur : entrez un nouveau fichier')
+        Erreur : entrez un nouveau fichier
+
+    En effet, si on teste l'existence du fichier, il est toujours possible (bien que peu probable) que le système d'exploitation suprime le fichier entre le test et l'ouverture du fichier. 
+
+
 
 
 .. toctree::
