@@ -1,0 +1,156 @@
+Modules and Package
++++++++++++++++++++
+
+Modules
+=======
+
+Creating a module
+~~~~~~~~~~~~~~~~~
+
+Let'us look to the following example. In the file exponential.py we have written the following function::
+
+    def exp(x, epsilon=1E-6):
+        """ calculate e to the power x """
+        result = 0
+        n = 1
+        term = 1 # Initial value
+        while abs(term)>epsilon :
+            result = result + term
+            term  = term * x/n
+            n = n+1
+
+How to use this ``exp`` from another file ? A solution could be the execute the file from the script with the ``exec(open('exponentielle.py').read())`` command. However, there is a much more convenient technique in python. The function be can imported using the command ::
+
+   from exponential import exp
+
+We do not put the ``.py`` file extension. Using modules has many advantages :
+
+- If the module was already imported, python do not execute the file a second time.
+
+- One can choose what we want to import in the module. 
+
+- Python can automatically looks for different pathes to find the file.
+
+
+Importing from a module
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Python is not a general purpose language. All the function that are specific are defined in a module. 
+Mathematical function (and constants) are in the math module. 
+
+They can be imported in different ways :
+
+- Import of the module :: 
+
+   import math
+   print math.sin(math.pi/3)
+
+- Import of specific objects in the module ::
+
+   from math import sin, pi
+   print sin(pi/3)
+
+- Import of all the objects defined in the module ::
+
+   from math import *
+   print sin(pi/3)
+      
+The first method is more verbose because we have to specify the module name every time. However, we have to use this method in our example if we want to compare the exp function from two different modules.
+
+In general, the second method should be preferred over the third one. Indeed, when all the functions are imported it is not easy then to know from which module the function was imported. Furthermore, this import can override existing function (for example, there is an ``open`` function is the module ``os``. Therefore the command ``from os import *`` will override the standard ``open`` function). 
+
+The ``import *`` can be used for module with **well known functions** that are used **many times** in a program. This is the case for the ``math`` module. 
+
+
+Package
+=======
+
+A package is a group of module (in other language it is called a library).
+
+Installation of a package
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Many packages are available on the Pypy web site. The ``pip`` shell command can be used to download and install the package on your computer. For example if you want to install the PyDAQmx package, simply run the command : ::
+
+    pip install PyDAQmx
+
+If you don't have root permission, then use the ``--user`` option. 
+
+If the package is not available on Pypy, then the usual way consist in downloading the package and then install it by running the setup script : ::
+
+    wget https://pypi.python.org/packages/source/P/PyDAQmx/PyDAQmx-1.3.2.tar.gz
+    tar -xvzf PyDAQmx-1.3.2.tar.gz
+    cd PyDAQmx-1.3.2
+    python setup.py install --user
+
+Create your package
+~~~~~~~~~~~~~~~~~~~
+
+A package is a collection of modules and sub-packages. In order to create a package, you simply have to put the files into the same directory (called for example ``my_package``). Python will know that this directory is a package if the there is a file called ``__init__.py`` in the directory. This file can be empty. 
+
+In order to import the modules, you can then do ``import my_package.mod1`` or ``from my_package import mod1``, ...
+
+The ``__init__.py`` is a python module whose content is imported by ``from my_package import ...``. 
+
+Python will be able to import "my_package" : 
+
+  * If your current working directory is the directory containing the "my_package" directory
+  * If this directory is in your search path. You can dynamically a directory into the search path using the following : ::
+        
+        import sys
+        sys.path.insert(1, 'directory/containing/my_package')
+
+  * If your directory is in the the "PYTHONPATH" environment variable. 
+  * If you have installed your package (see instruction bellow).
+
+Local import
+~~~~~~~~~~~~
+
+Inside a package, it is common to import modules or sub-packages, for example in the ``__init__.py`` file. This is a local import. You should indicate to python that an import is local by prefixing the module name with a dot. For example, in the ``__init__.py`` of my_package ::
+
+    from .mod1 import my_function
+
+    from . import mod1
+    mod1.my_function()
+
+If you are in a sub-package, then you can import from the parent package using two (or more) dots. 
+
+
+Distribute your package
+~~~~~~~~~~~~~~~~~~~~~~~
+
+It is easy to create you package and distribute it. You have to write a setup.py file containing some informations about your package. Then Python will take care of everything. The setup.py file should be in the same directory as the "my_package" directory. A minimal example of a setup.py file is the following : ::
+
+    #!/usr/bin/env python
+    # -*- coding: utf_8 -*-
+
+    from distutils.core import setup
+    __version__ = "alpha"
+
+    long_description="""This is a very nice package 
+
+    """
+
+    setup(name='my_package',
+          version=__version__,
+          description='A very nice package',
+          author=u'François Pignon',
+          author_email='francois.pignon@trucmuch.fr',
+          url='',
+          packages=['my_package'],
+         )
+
+
+Then you can execute the following commands : ::
+
+    python setup.py install # Install the package
+    python setup.py sdist # create a tar.gz or zip of your package
+    
+    python setup.py register # register on Pypy
+    python seupt.py sdist upload # Upload your package on Pypy 
+
+    pip install -e . --user 
+
+The last command is very useful for developers. It installs the project in editable mode, which means that modification of the project files will be taken into account (a simple install will copy the files to another place).  
+
+

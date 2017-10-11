@@ -1,0 +1,267 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>5.1. Modules and Package &mdash; documentation Python pour la physique 1.0</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/translations.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="documentation Python pour la physique 1.0" href="../index.html" />
+    <link rel="up" title="5. Gérer un projet en python" href="index.html" />
+    <link rel="next" title="5.2. Créer une documentation" href="documentation.html" />
+    <link rel="prev" title="5. Gérer un projet en python" href="index.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="modules-and-package">
+<h1>5.1. Modules and Package<a class="headerlink" href="#modules-and-package" title="Lien permanent vers ce titre">¶</a></h1>
+<div class="section" id="modules">
+<h2>5.1.1. Modules<a class="headerlink" href="#modules" title="Lien permanent vers ce titre">¶</a></h2>
+<div class="section" id="creating-a-module">
+<h3>5.1.1.1. Creating a module<a class="headerlink" href="#creating-a-module" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Let&#8217;us look to the following example. In the file exponential.py we have written the following function:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">exp</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mi">1</span><span class="n">E</span><span class="o">-</span><span class="mi">6</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; calculate e to the power x &quot;&quot;&quot;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">term</span> <span class="o">=</span> <span class="mi">1</span> <span class="c1"># Initial value</span>
+    <span class="k">while</span> <span class="nb">abs</span><span class="p">(</span><span class="n">term</span><span class="p">)</span><span class="o">&gt;</span><span class="n">epsilon</span> <span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">result</span> <span class="o">+</span> <span class="n">term</span>
+        <span class="n">term</span>  <span class="o">=</span> <span class="n">term</span> <span class="o">*</span> <span class="n">x</span><span class="o">/</span><span class="n">n</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span>
+</pre></div>
+</div>
+<p>How to use this <code class="docutils literal"><span class="pre">exp</span></code> from another file ? A solution could be the execute the file from the script with the <code class="docutils literal"><span class="pre">exec(open('exponentielle.py').read())</span></code> command. However, there is a much more convenient technique in python. The function be can imported using the command</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">exponential</span> <span class="k">import</span> <span class="n">exp</span>
+</pre></div>
+</div>
+<p>We do not put the <code class="docutils literal"><span class="pre">.py</span></code> file extension. Using modules has many advantages :</p>
+<ul class="simple">
+<li>If the module was already imported, python do not execute the file a second time.</li>
+<li>One can choose what we want to import in the module.</li>
+<li>Python can automatically looks for different pathes to find the file.</li>
+</ul>
+</div>
+<div class="section" id="importing-from-a-module">
+<h3>5.1.1.2. Importing from a module<a class="headerlink" href="#importing-from-a-module" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Python is not a general purpose language. All the function that are specific are defined in a module.
+Mathematical function (and constants) are in the math module.</p>
+<p>They can be imported in different ways :</p>
+<ul>
+<li><p class="first">Import of the module</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">math</span>
+<span class="nb">print</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Import of specific objects in the module</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">math</span> <span class="k">import</span> <span class="n">sin</span><span class="p">,</span> <span class="n">pi</span>
+<span class="nb">print</span> <span class="n">sin</span><span class="p">(</span><span class="n">pi</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Import of all the objects defined in the module</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">math</span> <span class="k">import</span> <span class="o">*</span>
+<span class="nb">print</span> <span class="n">sin</span><span class="p">(</span><span class="n">pi</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>The first method is more verbose because we have to specify the module name every time. However, we have to use this method in our example if we want to compare the exp function from two different modules.</p>
+<p>In general, the second method should be preferred over the third one. Indeed, when all the functions are imported it is not easy then to know from which module the function was imported. Furthermore, this import can override existing function (for example, there is an <code class="docutils literal"><span class="pre">open</span></code> function is the module <code class="docutils literal"><span class="pre">os</span></code>. Therefore the command <code class="docutils literal"><span class="pre">from</span> <span class="pre">os</span> <span class="pre">import</span> <span class="pre">*</span></code> will override the standard <code class="docutils literal"><span class="pre">open</span></code> function).</p>
+<p>The <code class="docutils literal"><span class="pre">import</span> <span class="pre">*</span></code> can be used for module with <strong>well known functions</strong> that are used <strong>many times</strong> in a program. This is the case for the <code class="docutils literal"><span class="pre">math</span></code> module.</p>
+</div>
+</div>
+<div class="section" id="package">
+<h2>5.1.2. Package<a class="headerlink" href="#package" title="Lien permanent vers ce titre">¶</a></h2>
+<p>A package is a group of module (in other language it is called a library).</p>
+<div class="section" id="installation-of-a-package">
+<h3>5.1.2.1. Installation of a package<a class="headerlink" href="#installation-of-a-package" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Many packages are available on the Pypy web site. The <code class="docutils literal"><span class="pre">pip</span></code> shell command can be used to download and install the package on your computer. For example if you want to install the PyDAQmx package, simply run the command :</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">PyDAQmx</span>
+</pre></div>
+</div>
+<p>If you don&#8217;t have root permission, then use the <code class="docutils literal"><span class="pre">--user</span></code> option.</p>
+<p>If the package is not available on Pypy, then the usual way consist in downloading the package and then install it by running the setup script :</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">wget</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">pypi</span><span class="o">.</span><span class="n">python</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">packages</span><span class="o">/</span><span class="n">source</span><span class="o">/</span><span class="n">P</span><span class="o">/</span><span class="n">PyDAQmx</span><span class="o">/</span><span class="n">PyDAQmx</span><span class="o">-</span><span class="mf">1.3</span><span class="o">.</span><span class="mf">2.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>
+<span class="n">tar</span> <span class="o">-</span><span class="n">xvzf</span> <span class="n">PyDAQmx</span><span class="o">-</span><span class="mf">1.3</span><span class="o">.</span><span class="mf">2.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>
+<span class="n">cd</span> <span class="n">PyDAQmx</span><span class="o">-</span><span class="mf">1.3</span><span class="o">.</span><span class="mi">2</span>
+<span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">install</span> <span class="o">--</span><span class="n">user</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="create-your-package">
+<h3>5.1.2.2. Create your package<a class="headerlink" href="#create-your-package" title="Lien permanent vers ce titre">¶</a></h3>
+<p>A package is a collection of modules and sub-packages. In order to create a package, you simply have to put the files into the same directory (called for example <code class="docutils literal"><span class="pre">my_package</span></code>). Python will know that this directory is a package if the there is a file called <code class="docutils literal"><span class="pre">__init__.py</span></code> in the directory. This file can be empty.</p>
+<p>In order to import the modules, you can then do <code class="docutils literal"><span class="pre">import</span> <span class="pre">my_package.mod1</span></code> or <code class="docutils literal"><span class="pre">from</span> <span class="pre">my_package</span> <span class="pre">import</span> <span class="pre">mod1</span></code>, ...</p>
+<p>The <code class="docutils literal"><span class="pre">__init__.py</span></code> is a python module whose content is imported by <code class="docutils literal"><span class="pre">from</span> <span class="pre">my_package</span> <span class="pre">import</span> <span class="pre">...</span></code>.</p>
+<p>Python will be able to import &#8220;my_package&#8221; :</p>
+<blockquote>
+<div><ul>
+<li><p class="first">If your current working directory is the directory containing the &#8220;my_package&#8221; directory</p>
+</li>
+<li><p class="first">If this directory is in your search path. You can dynamically a directory into the search path using the following :</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;directory/containing/my_package&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">If your directory is in the the &#8220;PYTHONPATH&#8221; environment variable.</p>
+</li>
+<li><p class="first">If you have installed your package (see instruction bellow).</p>
+</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="local-import">
+<h3>5.1.2.3. Local import<a class="headerlink" href="#local-import" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Inside a package, it is common to import modules or sub-packages, for example in the <code class="docutils literal"><span class="pre">__init__.py</span></code> file. This is a local import. You should indicate to python that an import is local by prefixing the module name with a dot. For example, in the <code class="docutils literal"><span class="pre">__init__.py</span></code> of my_package</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">.mod1</span> <span class="k">import</span> <span class="n">my_function</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">mod1</span>
+<span class="n">mod1</span><span class="o">.</span><span class="n">my_function</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>If you are in a sub-package, then you can import from the parent package using two (or more) dots.</p>
+</div>
+<div class="section" id="distribute-your-package">
+<h3>5.1.2.4. Distribute your package<a class="headerlink" href="#distribute-your-package" title="Lien permanent vers ce titre">¶</a></h3>
+<p>It is easy to create you package and distribute it. You have to write a setup.py file containing some informations about your package. Then Python will take care of everything. The setup.py file should be in the same directory as the &#8220;my_package&#8221; directory. A minimal example of a setup.py file is the following :</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: utf_8 -*-</span>
+
+<span class="kn">from</span> <span class="nn">distutils.core</span> <span class="k">import</span> <span class="n">setup</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s2">&quot;alpha&quot;</span>
+
+<span class="n">long_description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;This is a very nice package</span>
+
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">setup</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;my_package&#39;</span><span class="p">,</span>
+      <span class="n">version</span><span class="o">=</span><span class="n">__version__</span><span class="p">,</span>
+      <span class="n">description</span><span class="o">=</span><span class="s1">&#39;A very nice package&#39;</span><span class="p">,</span>
+      <span class="n">author</span><span class="o">=</span><span class="s1">u&#39;François Pignon&#39;</span><span class="p">,</span>
+      <span class="n">author_email</span><span class="o">=</span><span class="s1">&#39;francois.pignon@trucmuch.fr&#39;</span><span class="p">,</span>
+      <span class="n">url</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
+      <span class="n">packages</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;my_package&#39;</span><span class="p">],</span>
+     <span class="p">)</span>
+</pre></div>
+</div>
+<p>Then you can execute the following commands :</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">install</span> <span class="c1"># Install the package</span>
+<span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">sdist</span> <span class="c1"># create a tar.gz or zip of your package</span>
+
+<span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">register</span> <span class="c1"># register on Pypy</span>
+<span class="n">python</span> <span class="n">seupt</span><span class="o">.</span><span class="n">py</span> <span class="n">sdist</span> <span class="n">upload</span> <span class="c1"># Upload your package on Pypy</span>
+
+<span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">e</span> <span class="o">.</span> <span class="o">--</span><span class="n">user</span>
+</pre></div>
+</div>
+<p>The last command is very useful for developers. It installs the project in editable mode, which means that modification of the project files will be taken into account (a simple install will copy the files to another place).</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table des Matières</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">5.1. Modules and Package</a><ul>
+<li><a class="reference internal" href="#modules">5.1.1. Modules</a><ul>
+<li><a class="reference internal" href="#creating-a-module">5.1.1.1. Creating a module</a></li>
+<li><a class="reference internal" href="#importing-from-a-module">5.1.1.2. Importing from a module</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#package">5.1.2. Package</a><ul>
+<li><a class="reference internal" href="#installation-of-a-package">5.1.2.1. Installation of a package</a></li>
+<li><a class="reference internal" href="#create-your-package">5.1.2.2. Create your package</a></li>
+<li><a class="reference internal" href="#local-import">5.1.2.3. Local import</a></li>
+<li><a class="reference internal" href="#distribute-your-package">5.1.2.4. Distribute your package</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">5. Gérer un projet en python</a><ul>
+      <li>Previous: <a href="index.html" title="Chapitre précédent">5. Gérer un projet en python</a></li>
+      <li>Next: <a href="documentation.html" title="Chapitre suivant">5.2. Créer une documentation</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>Cette page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/projets/package.txt"
+            rel="nofollow">Montrer le code source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Recherche rapide</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, Pierre Cladé.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+      |
+      <a href="../_sources/projets/package.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

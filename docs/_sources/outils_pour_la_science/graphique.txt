@@ -1,0 +1,72 @@
+
+Graphics in Python
+==================
+
+There is a very complete library in Python that can be used to plot curves. This the ``matplotlib`` library. It relies on the ``numpy`` library because curves are always plotted using arrays. 
+
+
+The plot command
+----------------
+
+Let us start with an example : ::
+
+  from pylab import *
+  ion()
+
+  x = linspace(0,2*pi)
+  y = sin(x) + cos(y)**2
+  plot(x, y)
+
+The ``pylab`` modules will import all the function that will make Python suitable for numerical and graphical computation. It will import the matplotlib and numpy modules. To use pylab, one can either import it using the ``from pylab import *`` command or using an interactive python shell with the command ``ipython -pylab``.
+
+The ``plot`` command takes two parameters : the X and Y axis coordinates (if only one parameter is given, the x axis will be equal to arange(len(Y)))
+
+Optional parameters are used to modify the way the graph is plotted. The two main parameters are the color and the shape. For example, the command ``plot(x,y, 'k^')``, will plot triangle (signe ``'^'``) in black (``'k'`` is for black - the ``'b'`` is for blue). Look to the documentation for more details. 
+
+Other commands
+--------------
+
+To clear a graph, we use the function ``clf()`` (clear figure)
+
+On can add a title (``title("Le titre")``), labels for axis (``xlabel('x-axis')`` et ``ylabel``). The optional ``label`` parameter is used to make a legend on a graph with many plots :
+
+.. plot::
+    :include-source:
+
+    from pylab import *
+    X = linspace(-2,2, 100) 
+    Y = sin(X)**2*exp(-X**2)
+    Y_noise = Y + .1*(rand(len(X))-0.5)
+    plot(X,Y, label=u"Theory")
+    plot(X,Y_noise,'o', label=u"Experiment") 
+    xlabel(u'Voltage [V]')
+    ylabel(u'Length [m]')
+    title("Nonsense graph")
+    legend()
+    grid(True)
+
+Latex formula
+-------------
+
+In recent version of Matplotlib, it is possible to automatically insert Latex formula in graphs. They will be nicely converted ::
+
+      ylabel(u'Noise [$V/\sqrt{\mathrm{Hz}}$]')
+
+
+Main graphical commands
+-----------------------
+
+* ``plot(X,Y)``
+* ``loglog(X,Y)``, ``semilogx(X,Y)``, ``semilogy(X,Y)`` 
+* ``clf()`` to clear the graph
+* ``xlabel('blabla')``, ``ylabel('blabla')``, ``title('blabla')``
+* ``xlim((x_inf, x_sup))``, ``ylim((y_inf, y_sup))`` to zoom onto a part of the graph
+* ``grid(True)`` to plot the grid. The command ``grid(True, which='both')`` will plot a thin grid.
+* ``figure`` to open a new figure (a new window). Figures are automatically numbered. You can swith to an existing figure using the ``figure(n)`` command.
+* ``subplot(nx,ny,m)`` to make many plots on one figure. 
+* ``imshow(image)`` to plot a matrix using false color and ``colorbar()`` pour plot color scale.
+* ``text(x,y,s)`` plot the text ``s`` at the ``x, y`` position. Optional parameters can be used to center correctly the text. 
+* ``savefig(nom_fichier)``. Save the figure. The file format is determined by the file extension. We advise to use ``pdf`` for output that cannot be modified and svg if one want to modify it (using `Inkscape <http://inkscape.org>`_- for example).
+
+`Screenshots <http://matplotlib.org/users/screenshots.html>`_ are available on the ``matplotlib`` web site and can be used to quickly find the best way to plot a specific graph. 
+

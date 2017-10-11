@@ -1,0 +1,174 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>6.2. Graphics in Python &mdash; documentation Python pour la physique 1.0</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/translations.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="documentation Python pour la physique 1.0" href="../index.html" />
+    <link rel="up" title="6. Outils pour la science" href="index.html" />
+    <link rel="prev" title="6.1. Numpy Array" href="numpy.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="graphics-in-python">
+<h1>6.2. Graphics in Python<a class="headerlink" href="#graphics-in-python" title="Lien permanent vers ce titre">¶</a></h1>
+<p>There is a very complete library in Python that can be used to plot curves. This the <code class="docutils literal"><span class="pre">matplotlib</span></code> library. It relies on the <code class="docutils literal"><span class="pre">numpy</span></code> library because curves are always plotted using arrays.</p>
+<div class="section" id="the-plot-command">
+<h2>6.2.1. The plot command<a class="headerlink" href="#the-plot-command" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Let us start with an example :</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pylab</span> <span class="k">import</span> <span class="o">*</span>
+<span class="n">ion</span><span class="p">()</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="o">*</span><span class="n">pi</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">cos</span><span class="p">(</span><span class="n">y</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+<span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal"><span class="pre">pylab</span></code> modules will import all the function that will make Python suitable for numerical and graphical computation. It will import the matplotlib and numpy modules. To use pylab, one can either import it using the <code class="docutils literal"><span class="pre">from</span> <span class="pre">pylab</span> <span class="pre">import</span> <span class="pre">*</span></code> command or using an interactive python shell with the command <code class="docutils literal"><span class="pre">ipython</span> <span class="pre">-pylab</span></code>.</p>
+<p>The <code class="docutils literal"><span class="pre">plot</span></code> command takes two parameters : the X and Y axis coordinates (if only one parameter is given, the x axis will be equal to arange(len(Y)))</p>
+<p>Optional parameters are used to modify the way the graph is plotted. The two main parameters are the color and the shape. For example, the command <code class="docutils literal"><span class="pre">plot(x,y,</span> <span class="pre">'k^')</span></code>, will plot triangle (signe <code class="docutils literal"><span class="pre">'^'</span></code>) in black (<code class="docutils literal"><span class="pre">'k'</span></code> is for black - the <code class="docutils literal"><span class="pre">'b'</span></code> is for blue). Look to the documentation for more details.</p>
+</div>
+<div class="section" id="other-commands">
+<h2>6.2.2. Other commands<a class="headerlink" href="#other-commands" title="Lien permanent vers ce titre">¶</a></h2>
+<p>To clear a graph, we use the function <code class="docutils literal"><span class="pre">clf()</span></code> (clear figure)</p>
+<p>On can add a title (<code class="docutils literal"><span class="pre">title(&quot;Le</span> <span class="pre">titre&quot;)</span></code>), labels for axis (<code class="docutils literal"><span class="pre">xlabel('x-axis')</span></code> et <code class="docutils literal"><span class="pre">ylabel</span></code>). The optional <code class="docutils literal"><span class="pre">label</span></code> parameter is used to make a legend on a graph with many plots :</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pylab</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">Y</span> <span class="o">=</span> <span class="n">sin</span><span class="p">(</span><span class="n">X</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">X</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">Y_noise</span> <span class="o">=</span> <span class="n">Y</span> <span class="o">+</span> <span class="o">.</span><span class="mi">1</span><span class="o">*</span><span class="p">(</span><span class="n">rand</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">))</span><span class="o">-</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">u&quot;Theory&quot;</span><span class="p">)</span>
+<span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">Y_noise</span><span class="p">,</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">u&quot;Experiment&quot;</span><span class="p">)</span>
+<span class="n">xlabel</span><span class="p">(</span><span class="s1">u&#39;Voltage [V]&#39;</span><span class="p">)</span>
+<span class="n">ylabel</span><span class="p">(</span><span class="s1">u&#39;Length [m]&#39;</span><span class="p">)</span>
+<span class="n">title</span><span class="p">(</span><span class="s2">&quot;Nonsense graph&quot;</span><span class="p">)</span>
+<span class="n">legend</span><span class="p">()</span>
+<span class="n">grid</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>(<a class="reference external" href="../outils_pour_la_science/graphique-1.py">Source code</a>, <a class="reference external" href="../outils_pour_la_science/graphique-1.png">png</a>, <a class="reference external" href="../outils_pour_la_science/graphique-1.hires.png">hires.png</a>, <a class="reference external" href="../outils_pour_la_science/graphique-1.pdf">pdf</a>)</p>
+<div class="figure">
+<img alt="../_images/graphique-1.png" src="../_images/graphique-1.png" />
+</div>
+</div>
+<div class="section" id="latex-formula">
+<h2>6.2.3. Latex formula<a class="headerlink" href="#latex-formula" title="Lien permanent vers ce titre">¶</a></h2>
+<p>In recent version of Matplotlib, it is possible to automatically insert Latex formula in graphs. They will be nicely converted</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">ylabel</span><span class="p">(</span><span class="s1">u&#39;Noise [$V/\sqrt{\mathrm</span><span class="si">{Hz}</span><span class="s1">}$]&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="main-graphical-commands">
+<h2>6.2.4. Main graphical commands<a class="headerlink" href="#main-graphical-commands" title="Lien permanent vers ce titre">¶</a></h2>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">plot(X,Y)</span></code></li>
+<li><code class="docutils literal"><span class="pre">loglog(X,Y)</span></code>, <code class="docutils literal"><span class="pre">semilogx(X,Y)</span></code>, <code class="docutils literal"><span class="pre">semilogy(X,Y)</span></code></li>
+<li><code class="docutils literal"><span class="pre">clf()</span></code> to clear the graph</li>
+<li><code class="docutils literal"><span class="pre">xlabel('blabla')</span></code>, <code class="docutils literal"><span class="pre">ylabel('blabla')</span></code>, <code class="docutils literal"><span class="pre">title('blabla')</span></code></li>
+<li><code class="docutils literal"><span class="pre">xlim((x_inf,</span> <span class="pre">x_sup))</span></code>, <code class="docutils literal"><span class="pre">ylim((y_inf,</span> <span class="pre">y_sup))</span></code> to zoom onto a part of the graph</li>
+<li><code class="docutils literal"><span class="pre">grid(True)</span></code> to plot the grid. The command <code class="docutils literal"><span class="pre">grid(True,</span> <span class="pre">which='both')</span></code> will plot a thin grid.</li>
+<li><code class="docutils literal"><span class="pre">figure</span></code> to open a new figure (a new window). Figures are automatically numbered. You can swith to an existing figure using the <code class="docutils literal"><span class="pre">figure(n)</span></code> command.</li>
+<li><code class="docutils literal"><span class="pre">subplot(nx,ny,m)</span></code> to make many plots on one figure.</li>
+<li><code class="docutils literal"><span class="pre">imshow(image)</span></code> to plot a matrix using false color and <code class="docutils literal"><span class="pre">colorbar()</span></code> pour plot color scale.</li>
+<li><code class="docutils literal"><span class="pre">text(x,y,s)</span></code> plot the text <code class="docutils literal"><span class="pre">s</span></code> at the <code class="docutils literal"><span class="pre">x,</span> <span class="pre">y</span></code> position. Optional parameters can be used to center correctly the text.</li>
+<li><code class="docutils literal"><span class="pre">savefig(nom_fichier)</span></code>. Save the figure. The file format is determined by the file extension. We advise to use <code class="docutils literal"><span class="pre">pdf</span></code> for output that cannot be modified and svg if one want to modify it (using <a class="reference external" href="http://inkscape.org">Inkscape</a>- for example).</li>
+</ul>
+<p><a class="reference external" href="http://matplotlib.org/users/screenshots.html">Screenshots</a> are available on the <code class="docutils literal"><span class="pre">matplotlib</span></code> web site and can be used to quickly find the best way to plot a specific graph.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table des Matières</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">6.2. Graphics in Python</a><ul>
+<li><a class="reference internal" href="#the-plot-command">6.2.1. The plot command</a></li>
+<li><a class="reference internal" href="#other-commands">6.2.2. Other commands</a></li>
+<li><a class="reference internal" href="#latex-formula">6.2.3. Latex formula</a></li>
+<li><a class="reference internal" href="#main-graphical-commands">6.2.4. Main graphical commands</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">6. Outils pour la science</a><ul>
+      <li>Previous: <a href="numpy.html" title="Chapitre précédent">6.1. Numpy Array</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>Cette page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/outils_pour_la_science/graphique.txt"
+            rel="nofollow">Montrer le code source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Recherche rapide</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, Pierre Cladé.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+      |
+      <a href="../_sources/outils_pour_la_science/graphique.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

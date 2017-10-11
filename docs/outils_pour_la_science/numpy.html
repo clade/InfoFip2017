@@ -1,0 +1,427 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>6.1. Numpy Array &mdash; documentation Python pour la physique 1.0</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/translations.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="documentation Python pour la physique 1.0" href="../index.html" />
+    <link rel="up" title="6. Outils pour la science" href="index.html" />
+    <link rel="next" title="6.2. Graphics in Python" href="graphique.html" />
+    <link rel="prev" title="6. Outils pour la science" href="index.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="numpy-array">
+<span id="numpy"></span><h1>6.1. Numpy Array<a class="headerlink" href="#numpy-array" title="Lien permanent vers ce titre">¶</a></h1>
+<p>Numpy array is not a native Python datatype. It is part of the <code class="docutils literal"><span class="pre">numpy</span></code> package. This is the datatype that should be used for large numeric data analysis or numerical calculation. They differ from list : the size of a numpy array cannot be modified and all the data inside an array are of the same type. Those constraints allow much faster computation. We will mainly use 1D and 2D array. They can however be of any dimension. Numpy arrays allow users to perform calculation in a way similar to Matlab or Scilab.</p>
+<p>Some examples :</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">numpy</span> <span class="k">import</span> <span class="o">*</span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="n">array</span><span class="p">([</span><span class="mi">4</span><span class="p">,</span><span class="mi">23</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span> <span class="c1"># 1D array</span>
+<span class="nb">print</span> <span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">13</span>
+
+<span class="n">b</span> <span class="o">=</span> <span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">]])</span>
+<span class="nb">print</span> <span class="n">b</span>
+</pre></div>
+</div>
+<p>In order to use array, we should first import the numpy package. The array command can be used to create array from any iterable (for example a <code class="docutils literal"><span class="pre">list</span></code>). A list of number will create a 1D array. A list of lists having the same size will create a 2D array.</p>
+<p>One can create an array containing the 0, 1, 2, 3, ... sequence using the <code class="docutils literal"><span class="pre">arange</span></code> command. This command has the same arguments than the <code class="docutils literal"><span class="pre">range</span></code> command (<code class="docutils literal"><span class="pre">arange(end)</span></code>, <code class="docutils literal"><span class="pre">arange(start,</span> <span class="pre">end)</span></code>, <code class="docutils literal"><span class="pre">arange(start,</span> <span class="pre">end,</span> <span class="pre">step)</span></code>). Items of an array can be changed using the same syntax as <code class="docutils literal"><span class="pre">list</span></code>. The size of an array can be obtained using the <code class="docutils literal"><span class="pre">shape</span></code> property. This property returns a tuple.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="n">arange</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="nb">print</span> <span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">a</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="nb">print</span> <span class="n">a</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+<div class="section" id="mathematical-operation-on-array">
+<h2>6.1.1. Mathematical operation on array<a class="headerlink" href="#mathematical-operation-on-array" title="Lien permanent vers ce titre">¶</a></h2>
+<p>One of the main advantage of using numpy array is that it is possible to perform usual operation, item by item, without using a loop. This holds for binary operation (sum, product, difference, ...) and also for usual mathematical operation (sin, cos, tan, exp, log, ...). In order to work with array, those function should be imported from the <code class="docutils literal"><span class="pre">numpy</span></code> module (and not the <code class="docutils literal"><span class="pre">math</span></code> module).  Global functions on array, such as <code class="docutils literal"><span class="pre">sum</span></code>, <code class="docutils literal"><span class="pre">prod</span></code>, <code class="docutils literal"><span class="pre">max</span></code>, <code class="docutils literal"><span class="pre">min</span></code>, <code class="docutils literal"><span class="pre">mean</span></code>, <code class="docutils literal"><span class="pre">std</span></code> can be used either as method of the array or as function of the numpy module.</p>
+<p>For example :</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">numpy</span> <span class="k">import</span> <span class="o">*</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">arange</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="nb">print</span> <span class="n">a</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">sin</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+
+<span class="n">even_numbers</span> <span class="o">=</span> <span class="n">arange</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">10000</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="nb">print</span> <span class="mi">2</span><span class="o">*</span><span class="n">prod</span><span class="p">(</span><span class="n">even_numbers</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="n">prod</span><span class="p">(</span><span class="n">even_numbers</span><span class="o">**</span><span class="mi">2</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+<span class="c1"># using function</span>
+<span class="nb">print</span> <span class="nb">min</span><span class="p">(</span><span class="n">x</span><span class="o">+</span><span class="mi">2</span><span class="o">/</span><span class="n">x</span><span class="p">)</span>
+<span class="c1">#using methods</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">2</span><span class="o">/</span><span class="n">x</span>
+<span class="n">a</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>In this example, we have used the function <code class="docutils literal"><span class="pre">linspace(start,</span> <span class="pre">end,</span> <span class="pre">nb_steps)</span></code>. This function creates an array with <code class="docutils literal"><span class="pre">nb_steps</span></code> values between <code class="docutils literal"><span class="pre">start</span></code> and <code class="docutils literal"><span class="pre">end</span></code>.</p>
+<p>Note also that the <code class="docutils literal"><span class="pre">sin</span></code> function is imported from the numpy library. This function takes an array and returns an array of the same size.</p>
+<p>Note that the builtins functions <code class="docutils literal"><span class="pre">sum</span></code>, <code class="docutils literal"><span class="pre">max</span></code> and <code class="docutils literal"><span class="pre">min</span></code> are different than the one imported from <code class="docutils literal"><span class="pre">numpy</span></code>. If you use the bultin ones, you loose the advantage of using numpy array.</p>
+<p>It is possible to create a function that works with an array from any function using the <code class="docutils literal"><span class="pre">vectorize</span></code> function of the <code class="docutils literal"><span class="pre">numpy</span></code> package :</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">myfunction</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="o">....</span>
+    <span class="k">return</span> <span class="o">....</span>
+
+<span class="n">myfunction</span> <span class="o">=</span> <span class="n">vectorize</span><span class="p">(</span><span class="n">myfunction</span><span class="p">)</span>
+<span class="nb">print</span> <span class="n">myfunction</span><span class="p">(</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="data-type">
+<h2>6.1.2. Data type<a class="headerlink" href="#data-type" title="Lien permanent vers ce titre">¶</a></h2>
+<p>In order to get the data type of the array, one can use the dtype attribute. It is possible to set the data type of an array when it is created using the optional <code class="docutils literal"><span class="pre">dtype</span></code> parameter.</p>
+<p>For example :</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="n">arange</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="nb">print</span> <span class="n">a</span><span class="o">.</span><span class="n">dtype</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">arange</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;float64&#39;</span><span class="p">)</span>
+<span class="nb">print</span> <span class="n">a</span><span class="o">.</span><span class="n">dtype</span>
+</pre></div>
+</div>
+<p>Numpy array have more data type than Python. For example, floating point number can be saved as 32, 64 or 128 bits (<code class="docutils literal"><span class="pre">float32</span></code>, <code class="docutils literal"><span class="pre">float64</span></code>, <code class="docutils literal"><span class="pre">float128</span></code>), integer are usually limited to 64 bits (this depends on you system).</p>
+<p>The data type of an array cannot be modified. If an array is defined as an integer array one cannot put inside a float number. This number will be converted to an integer (without warning).</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="n">arange</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mf">3.141592</span>
+<span class="nb">print</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="c1"># a[1]==3</span>
+</pre></div>
+</div>
+<p>Of course, you can create a new array from an existing one with the data type you want.</p>
+</div>
+<div class="section" id="array-indexing">
+<h2>6.1.3. Array indexing<a class="headerlink" href="#array-indexing" title="Lien permanent vers ce titre">¶</a></h2>
+<p>One can access to array items the same way than for list (item number starts at 0, one can extract an array using slices : <code class="docutils literal"><span class="pre">a[start:end:step]</span></code>, negative numbers start from the end). Numpy array can be modified. This can be done element by element or on a group of elements.</p>
+<p>For example :</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="n">arange</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">a</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mi">34</span>
+<span class="n">a</span><span class="p">[::</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1">#This is not possible for a list</span>
+</pre></div>
+</div>
+<p>Be aware that when an array is extracted using slices, it share the same memory space than the initial array. The following code will modify the array <code class="docutils literal"><span class="pre">a</span></code>.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="n">arange</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="p">[::</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">b</span><span class="p">[:]</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="nb">print</span> <span class="n">a</span>
+</pre></div>
+</div>
+<p>It is possible to extract an array from an array using a boolean array. For example :</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="n">array</span><span class="p">([</span><span class="mi">23</span><span class="p">,</span><span class="mi">25</span><span class="p">,</span><span class="mi">10</span><span class="p">])</span>
+<span class="n">condition</span> <span class="o">=</span> <span class="n">array</span><span class="p">([</span><span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">])</span>
+<span class="nb">print</span> <span class="n">a</span><span class="p">[</span><span class="n">condition</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>This is very useful because it is possible to create a boolean array using comparison and logical operators.</p>
+<p>For example :</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="n">arange</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">cond</span> <span class="o">=</span> <span class="n">a</span><span class="o">&gt;=</span><span class="mi">5</span>
+<span class="nb">print</span> <span class="n">cond</span>
+
+<span class="n">a</span><span class="p">[</span><span class="n">cond</span><span class="p">]</span> <span class="o">=</span> <span class="mi">5</span>
+
+<span class="n">b</span> <span class="o">=</span> <span class="n">arange</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">cond</span> <span class="o">=</span> <span class="p">(</span><span class="n">b</span><span class="o">%</span><span class="mi">2</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="o">~</span><span class="p">(</span><span class="n">b</span><span class="o">%</span><span class="mi">5</span><span class="o">==</span><span class="mi">2</span><span class="p">)</span>
+<span class="nb">print</span> <span class="n">b</span><span class="p">[</span><span class="n">cond</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Logical operators on array are <code class="docutils literal"><span class="pre">'&amp;'</span></code> for and, <code class="docutils literal"><span class="pre">'|'</span></code> for or and <code class="docutils literal"><span class="pre">'~'</span></code> for not. The operators <code class="docutils literal"><span class="pre">and</span></code>, <code class="docutils literal"><span class="pre">or</span></code> and <code class="docutils literal"><span class="pre">not</span></code> do not work with array (indeed they are not operator!).</p>
+</div>
+<div class="section" id="d-array-and-linear-algebra">
+<h2>6.1.4. 2D array and linear algebra<a class="headerlink" href="#d-array-and-linear-algebra" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Here are some examples of 2D array</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">numpy</span> <span class="k">import</span> <span class="o">*</span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">9</span><span class="p">]])</span>
+
+<span class="nb">print</span> <span class="n">a</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># Column number 0</span>
+<span class="nb">print</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">,:]</span> <span class="c1"># Line number 1</span>
+</pre></div>
+</div>
+<p>2D numpy array can be used as matrices. The matrix product <strong>is not</strong> the <code class="docutils literal"><span class="pre">*</span></code> operator (which makes the product element by element). In order to perform true product one can use the <code class="docutils literal"><span class="pre">dot</span></code> function of the numpy package. The linalg package contains also many function of linear algebra (see the documentation).</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="k">import</span> <span class="n">linalg</span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">9</span><span class="p">]])</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">3</span><span class="p">,</span><span class="mf">1.</span><span class="p">],[</span><span class="mf">3.14</span><span class="p">,</span><span class="mf">6.02</span><span class="p">]])</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span>
+
+<span class="nb">print</span> <span class="n">linalg</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="c1"># eigen vectors and eigen values</span>
+</pre></div>
+</div>
+<p>We briefly mention here the <code class="docutils literal"><span class="pre">matrix</span></code> package of <code class="docutils literal"><span class="pre">numpy</span></code>. Using the <code class="docutils literal"><span class="pre">matrix</span></code> type, one can create matrices or vectors. The product is done conveniently using the <code class="docutils literal"><span class="pre">*</span></code> operator.</p>
+</div>
+<div class="section" id="useful-functions-and-methods">
+<h2>6.1.5. Useful functions and methods<a class="headerlink" href="#useful-functions-and-methods" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Array methods :</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">.sum()</span></code>, <code class="docutils literal"><span class="pre">.prod()</span></code>, <code class="docutils literal"><span class="pre">.mean()</span></code>, <code class="docutils literal"><span class="pre">.std()</span></code>. Those method have an <code class="docutils literal"><span class="pre">axis</span></code> option that perform the operation only on one <code class="docutils literal"><span class="pre">axis</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">.reshape(shape)</span></code> : change the shape. The shape argument is a tuple. The total number of items should be unchanged</li>
+<li><code class="docutils literal"><span class="pre">.flatten()</span></code> : makes a 1D array</li>
+<li><code class="docutils literal"><span class="pre">.transpose()</span></code></li>
+</ul>
+<p>Array creation :</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">arange</span></code> : similar to the range command.</li>
+<li><code class="docutils literal"><span class="pre">linspace</span></code> : the <code class="docutils literal"><span class="pre">linspace(start,</span> <span class="pre">stop,</span> <span class="pre">num=50,</span> <span class="pre">endpoint=True)</span></code>. The <code class="docutils literal"><span class="pre">endpoint</span></code> option set weather or not <code class="docutils literal"><span class="pre">stop</span></code> is the last sample (or the next one).</li>
+<li><code class="docutils literal"><span class="pre">zeros(tpl)</span></code>, where <code class="docutils literal"><span class="pre">tpl=(n1,n2,...)</span></code> is a tuple containing the shape of the array.</li>
+<li><code class="docutils literal"><span class="pre">ones(tpl)</span></code> : similar to zeros.</li>
+<li><code class="docutils literal"><span class="pre">rand(nx,</span> <span class="pre">ny,</span> <span class="pre">...)</span></code> : random number between 0 and 1. The shape will be (nx, ny, ...).</li>
+<li><code class="docutils literal"><span class="pre">X,Y</span> <span class="pre">=</span> <span class="pre">meshgrid(x,y)</span></code> : created 2D array X and Y such that <code class="docutils literal"><span class="pre">X[i,j]</span> <span class="pre">=</span> <span class="pre">x[j]</span></code> and <code class="docutils literal"><span class="pre">Y[i,j]</span> <span class="pre">=</span> <span class="pre">y[j]</span></code></li>
+</ul>
+</div>
+<div class="section" id="saving-numpy-array">
+<h2>6.1.6. Saving numpy array<a class="headerlink" href="#saving-numpy-array" title="Lien permanent vers ce titre">¶</a></h2>
+<div class="section" id="ascii-format">
+<h3>6.1.6.1. Ascii format<a class="headerlink" href="#ascii-format" title="Lien permanent vers ce titre">¶</a></h3>
+<p>One can save and read 2D numpy array in a text file using the  <code class="docutils literal"><span class="pre">savetxt(fname,</span> <span class="pre">tableau)</span></code> and <code class="docutils literal"><span class="pre">loadtxt</span></code> commands. This is a universal method (ascii file can be read by many applications). However it is slow and this method can lead to rounding error when numbers are converted to text.</p>
+<p>The <code class="docutils literal"><span class="pre">loadtxt</span></code> can be used to read almost any file produced by another application. Look to the function documentation for the different options. For example one can set the separator in order to read a CSV (comma separated values) file.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">loadtxt</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="binary-format">
+<h3>6.1.6.2. Binary format<a class="headerlink" href="#binary-format" title="Lien permanent vers ce titre">¶</a></h3>
+<p>The <code class="docutils literal"><span class="pre">load</span></code> and <code class="docutils literal"><span class="pre">save</span></code> function of the <code class="docutils literal"><span class="pre">numpy</span></code> module can be used to store directly numpy array in a file. This method is a direct copy of the memory. It is fast and uses less memory space. However if does not provide direct compatibility with other application.</p>
+<p>It is possible to convert binary data of other application to array. If the data is written into a file, one can use the <code class="docutils literal"><span class="pre">fromfile</span></code> function. If the data comes directly from a function (for example, if it comes from a CCD camera or a digital scope), one can use the <code class="docutils literal"><span class="pre">frombuffer</span></code> function. They are universal functions that can be parametrized to read any format (signed/unsigned integer, big or little endian, 16 or 32 bits, ...).</p>
+</div>
+</div>
+<div class="section" id="understanding-numpy-array">
+<h2>6.1.7. Understanding numpy array<a class="headerlink" href="#understanding-numpy-array" title="Lien permanent vers ce titre">¶</a></h2>
+<p>It&#8217;s useful to understand how numpy arrays are stored in the memory. Because the size and the data type of the array are not mutable, the total amount of memory is fixed. The place where the data are stored is a contiguous block of memory, in a way similar to array in C or Fortran. One can access to this memory block using the <code class="docutils literal"><span class="pre">data</span></code> attribute of an array : this will return a buffer (basically a string of bytes). For example</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">numpy</span> <span class="k">import</span> <span class="o">*</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">arange</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">int16</span><span class="p">)</span>
+
+<span class="nb">print</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> <span class="c1"># 5*2 = 10 bytes</span>
+<span class="k">assert</span> <span class="n">a</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">==</span><span class="nb">chr</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="c1"># The first byte is 0</span>
+</pre></div>
+</div>
+<p>The numpy array does not only contain a pointer to the starting address in the block of memory, but also informations on how to retrieve elements of the array. Each element of the array starts at a specific position in the block of memory. This position is a linear combination of the indexes in the array. For example, in a 10x20 2D array of int32, the position of element (i,j) will be <span class="math">\(20\times4\times i + 4\times j\)</span>. The two coefficients <span class="math">\((80, 4)\)</span> are the only parameters you need in order to read the array. The are obtained from the <code class="docutils literal"><span class="pre">strides</span></code> property of the array.</p>
+<p>It is important to know that you can create two arrays that share the same memory block, but with a different starting address and a different <code class="docutils literal"><span class="pre">strides</span></code>. This is the mechanism used when slicing an array or reshaping the array.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">numpy</span> <span class="k">import</span> <span class="o">*</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">arange</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">int16</span><span class="p">)</span>
+<span class="nb">print</span> <span class="n">a</span><span class="o">.</span><span class="n">strides</span> <span class="c1"># (2,)</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="p">[::</span><span class="mi">2</span><span class="p">]</span>
+<span class="nb">print</span> <span class="n">b</span><span class="o">.</span><span class="n">strides</span> <span class="c1"># (4,)</span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],[</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">])</span>
+<span class="n">I</span><span class="p">,</span><span class="n">J</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">strides</span>
+<span class="n">a</span><span class="o">.</span><span class="n">strides</span> <span class="o">=</span> <span class="p">(</span><span class="n">J</span><span class="p">,</span><span class="n">I</span><span class="p">)</span> <span class="c1"># transposition</span>
+</pre></div>
+</div>
+<p>This mechanism is very fast and efficient because no copy of the data is performed. However, we should remember that modifying the content of one array will modify the content of all arrays that share the same memory block.</p>
+<p>We have seen in the previous section that we can use operation on array (like <code class="docutils literal"><span class="pre">+</span></code>, <code class="docutils literal"><span class="pre">*</span></code>, <code class="docutils literal"><span class="pre">/</span></code>, ...). They will perform the operatio element by element and return a new array. Those operation can also be used between an array and a scale (<code class="docutils literal"><span class="pre">2*a</span></code>). Numpy has a mechanism called broadcasting that makes possible, under certain circumstance (see <a class="reference external" href="docs.scipy.org/doc/numpy/user/basics.broadcasting.html">docs.scipy.org/doc/numpy/user/basics.broadcasting.html</a>), to work with two arrays of different sizes. For example an array of size <span class="math">\(m\times1\)</span> can operate with an array of size <span class="math">\(1\times n\)</span> to form an array of size <span class="math">\(m\times n\)</span>. The arrays are broadcast to have the correct dimension by duplicating the column or row. Indeed, there is no real dupliction, simply numpy set the strides of the broadcast dimension to 0.</p>
+</div>
+<div class="section" id="beyond-numpy">
+<h2>6.1.8. Beyond numpy<a class="headerlink" href="#beyond-numpy" title="Lien permanent vers ce titre">¶</a></h2>
+<p>As we have seen, numpy array should be used when dealing with large data set. <strong>You should not use</strong> loops with numpy array. When there is a way to not use loop, execution can then be almost as fast as with a compiled language.</p>
+<p>If you really have to use a loop and if this loop is the bottle neck of you program, then you can consider using alternative solution based on compilaton. There are two ways : either by building your library directely in the langage you choose, and then link it to python. In C, you can use the ctypes module and in Fortran, the F2PY module. The other, and more convenient, alternative is to use a tool to convert your function to a compiled langage. This a how the Cython module work.</p>
+<div class="section" id="cython">
+<h3>6.1.8.1. Cython<a class="headerlink" href="#cython" title="Lien permanent vers ce titre">¶</a></h3>
+<p>The Cython package is used to convert a Python function to a C function which is compiled.</p>
+<p>Let us see a simple example. We want to calculate the value of <span class="math">\(\pi\)</span> using the following formula :</p>
+<div class="math">
+\[\frac\pi4=\sum_{k=0}^{\infty}\frac{(-1)^k}{2k+1}\]</div>
+<p>This formula is chosen because it is probably the slowest formula that can be used to calculate <span class="math">\(\pi\)</span>. We will calculate the sum up to <span class="math">\(k=10^6\)</span>. The <code class="docutils literal"><span class="pre">%timeit</span></code> magic function of IPython was used.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Using python</span>
+<span class="o">%</span><span class="n">timeit</span> <span class="nb">sum</span><span class="p">([(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">**</span><span class="n">k</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="mi">6</span><span class="p">)])</span>
+<span class="c1"># result : 493ms</span>
+
+<span class="o">%</span><span class="n">timeit</span> <span class="nb">sum</span><span class="p">([(</span><span class="mi">1</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="n">k</span><span class="o">%</span><span class="mi">2</span><span class="p">))</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="mi">6</span><span class="p">)])</span>
+<span class="c1"># result : 253 ms</span>
+
+<span class="k">def</span> <span class="nf">calc_pi</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">sgn</span> <span class="o">=</span> <span class="mf">1.</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+        <span class="n">out</span> <span class="o">+=</span> <span class="n">sgn</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">sgn</span> <span class="o">=</span> <span class="o">-</span><span class="n">sgn</span>
+    <span class="k">return</span> <span class="n">out</span>
+
+<span class="o">%</span><span class="n">timeit</span> <span class="n">calc_pi</span><span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="mi">6</span><span class="p">)</span>
+<span class="c1"># result 112ms</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="n">k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="mi">6</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="o">%</span><span class="n">timeit</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="mi">1</span><span class="o">-</span><span class="p">(</span><span class="n">k</span><span class="o">%</span><span class="mi">2</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+<span class="c1"># result : 17ms</span>
+</pre></div>
+</div>
+<p>Below is a simple example using cython. The online documentation (<a class="reference external" href="http://docs.cython.org/">http://docs.cython.org/</a>) will give you more informations on how to use cython and to compile the code below. We have created a calc_pi.pyx file from the pure python function. The pyx file contains regular Python code with declaration of the type of variable.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">calc_pi</span><span class="p">(</span><span class="nb">int</span> <span class="n">N</span><span class="p">):</span>
+    <span class="n">cdef</span> <span class="n">double</span> <span class="n">out</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">cdef</span> <span class="nb">int</span> <span class="n">i</span>
+    <span class="n">cdef</span> <span class="n">double</span> <span class="n">sgn</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">xrange</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+        <span class="n">out</span> <span class="o">+=</span> <span class="n">sgn</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">sgn</span> <span class="o">=</span> <span class="o">-</span><span class="n">sgn</span>
+    <span class="k">return</span> <span class="n">out</span>
+</pre></div>
+</div>
+<p>To use the code below, run the following script</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pyximport</span><span class="p">;</span> <span class="n">pyximport</span><span class="o">.</span><span class="n">install</span><span class="p">()</span>
+<span class="kn">import</span> <span class="nn">calc_pi</span>
+
+<span class="nb">print</span> <span class="n">calc_pi</span><span class="p">(</span><span class="mi">1</span><span class="n">E6</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Once compiled, the calc_pi function can be used as any python function. The duration is 4.9ms, four times faster than numpy. Even in the situation where numpy can be used, cython can be faster, the main reason is that in this example we don&#8217;t need to store an array in memory.</p>
+</div>
+<div class="section" id="ctypes">
+<h3>6.1.8.2. ctypes<a class="headerlink" href="#ctypes" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Ctypes is a library that allow to use C functions in Python. This library allow you to link any functions. You don&#8217;t need the source code of the function but only a compiled shared library (.so for linux and .dll for windows). For this example, I will show you how to compile your shared library from a C file, but ctypes can be used even if you get a library from a third party (for example the driver of an instrument).</p>
+<p>The C file to calculate <span class="math">\(pi\)</span> is the following (named pi.c):</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span> <span class="nf">calc_pi</span><span class="p">(</span><span class="kt">int</span> <span class="n">N</span><span class="p">,</span> <span class="kt">double</span> <span class="o">*</span> <span class="n">out</span><span class="p">){</span>
+    <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+    <span class="kt">double</span> <span class="n">sgn</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="o">*</span><span class="n">out</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">N</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+        <span class="o">*</span><span class="n">out</span> <span class="o">+=</span> <span class="n">sgn</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">);</span>
+        <span class="n">sgn</span> <span class="o">=</span> <span class="o">-</span><span class="n">sgn</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+</pre></div>
+</div>
+<p>Which is compiled (under linux) using :</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">gcc</span> <span class="o">-</span><span class="n">shared</span> <span class="o">-</span><span class="n">o</span> <span class="n">libpi</span><span class="o">.</span><span class="n">so</span> <span class="o">-</span><span class="n">fPIC</span> <span class="n">pi</span><span class="o">.</span><span class="n">c</span>  <span class="o">-</span><span class="n">Wno</span><span class="o">-</span><span class="n">pointer</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="nb">int</span><span class="o">-</span><span class="n">cast</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal"><span class="pre">libpi.so</span></code> is now linked using ctypes :</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">ctypes</span>
+<span class="kn">from</span> <span class="nn">ctypes</span> <span class="k">import</span> <span class="n">byref</span>
+<span class="n">lib</span> <span class="o">=</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">cdll</span><span class="o">.</span><span class="n">LoadLibrary</span><span class="p">(</span><span class="s1">&#39;./libpi.so&#39;</span><span class="p">)</span>
+
+<span class="n">calc_pi</span> <span class="o">=</span> <span class="n">lib</span><span class="o">.</span><span class="n">calc_pi</span>
+<span class="n">out</span> <span class="o">=</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">c_double</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="c1"># creation of the output variable</span>
+<span class="n">calc_pi</span><span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="mi">6</span><span class="p">,</span> <span class="n">byref</span><span class="p">(</span><span class="n">out</span><span class="p">))</span>
+<span class="nb">print</span> <span class="n">out</span><span class="o">.</span><span class="n">value</span>
+</pre></div>
+</div>
+<p>In this example, the memory for the output variable is created in the python script and then passed by reference to the C function. The execution time is similar to the Cython example.</p>
+</div>
+<div class="section" id="numba">
+<h3>6.1.8.3. Numba<a class="headerlink" href="#numba" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Numba is a compiler for python. It is even simpler to use than cython, because no modification of the code is required. A simple decorator is used to accelerate a Python function.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numba</span>
+
+<span class="nd">@numba</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">numba</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="n">numba</span><span class="o">.</span><span class="n">int32</span><span class="p">),</span> <span class="n">nogil</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">calc_pi_numba</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">sgn</span> <span class="o">=</span> <span class="mf">1.</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+        <span class="n">out</span> <span class="o">+=</span> <span class="n">sgn</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">sgn</span> <span class="o">=</span> <span class="o">-</span><span class="n">sgn</span>
+    <span class="k">return</span> <span class="n">out</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table des Matières</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">6.1. Numpy Array</a><ul>
+<li><a class="reference internal" href="#mathematical-operation-on-array">6.1.1. Mathematical operation on array</a></li>
+<li><a class="reference internal" href="#data-type">6.1.2. Data type</a></li>
+<li><a class="reference internal" href="#array-indexing">6.1.3. Array indexing</a></li>
+<li><a class="reference internal" href="#d-array-and-linear-algebra">6.1.4. 2D array and linear algebra</a></li>
+<li><a class="reference internal" href="#useful-functions-and-methods">6.1.5. Useful functions and methods</a></li>
+<li><a class="reference internal" href="#saving-numpy-array">6.1.6. Saving numpy array</a><ul>
+<li><a class="reference internal" href="#ascii-format">6.1.6.1. Ascii format</a></li>
+<li><a class="reference internal" href="#binary-format">6.1.6.2. Binary format</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#understanding-numpy-array">6.1.7. Understanding numpy array</a></li>
+<li><a class="reference internal" href="#beyond-numpy">6.1.8. Beyond numpy</a><ul>
+<li><a class="reference internal" href="#cython">6.1.8.1. Cython</a></li>
+<li><a class="reference internal" href="#ctypes">6.1.8.2. ctypes</a></li>
+<li><a class="reference internal" href="#numba">6.1.8.3. Numba</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">6. Outils pour la science</a><ul>
+      <li>Previous: <a href="index.html" title="Chapitre précédent">6. Outils pour la science</a></li>
+      <li>Next: <a href="graphique.html" title="Chapitre suivant">6.2. Graphics in Python</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>Cette page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/outils_pour_la_science/numpy.txt"
+            rel="nofollow">Montrer le code source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Recherche rapide</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, Pierre Cladé.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+      |
+      <a href="../_sources/outils_pour_la_science/numpy.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

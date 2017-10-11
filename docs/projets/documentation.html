@@ -1,0 +1,177 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>5.2. Créer une documentation &mdash; documentation Python pour la physique 1.0</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/translations.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="documentation Python pour la physique 1.0" href="../index.html" />
+    <link rel="up" title="5. Gérer un projet en python" href="index.html" />
+    <link rel="next" title="5.3. Test unitaire" href="test_unitaire.html" />
+    <link rel="prev" title="5.1. Modules and Package" href="package.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="creer-une-documentation">
+<h1>5.2. Créer une documentation<a class="headerlink" href="#creer-une-documentation" title="Lien permanent vers ce titre">¶</a></h1>
+<p>La librairie <code class="docutils literal"><span class="pre">Sphinx</span></code> est devenue le logiciel standard premettant d&#8217;écrire une documentation python. Le fait qu&#8217;elle soit écrite en python lui permet d&#8217;effectuer automatiquement un certain nombre de taches (comme récupérer des chaînes de documentation, effectuer des test, ...).</p>
+<p>Sphinx permet d&#8217;exporter la documentation en format html mais aussi en Latex (et donc en PDF) ou en ODF (Libre office). Ce cours est écrite en grace à Sphinx.</p>
+<div class="section" id="utilisation">
+<h2>5.2.1. Utilisation<a class="headerlink" href="#utilisation" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Pour l&#8217;utiliser on lance le script <code class="docutils literal"><span class="pre">sphinx-quickstart</span></code>. On répond ensuite aux questions !</p>
+<p>Il y alors deux fichiers importants : le fichier de configuration (<code class="docutils literal"><span class="pre">conf.py</span></code>). Ce fichier python peut être modifié pour adapter le projet (et changer ce qui a été créé suite aux questions de <code class="docutils literal"><span class="pre">sphinx-quickstart</span></code>).</p>
+<p>Le deuxième fichier est <code class="docutils literal"><span class="pre">index.rst</span></code>. Il s&#8217;agit du fichier racine de la documentation. Sphinx utilise le reStructuredText comme langage de balisage.</p>
+</div>
+<div class="section" id="exemple">
+<h2>5.2.2. Exemple<a class="headerlink" href="#exemple" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Voici un exemple de fichier <code class="docutils literal"><span class="pre">index.rst</span></code></p>
+<div class="highlight-rest"><div class="highlight"><pre><span></span><span class="gh">Voici un exemple de documentation</span>
+<span class="gh">=================================</span>
+
+Voici un super projet.
+
+<span class="gh">Installation</span>
+<span class="gh">------------</span>
+
+Il suffit de lancer la commande <span class="se">::</span>
+
+<span class="s">    python setup.py</span>
+
+<span class="gh">Utilisation</span>
+<span class="gh">-----------</span>
+
+Voici un exemple d&#39;utilisation <span class="se">::</span>
+
+<span class="s">    from truc.fichier import UneClasse</span>
+
+<span class="s">    ma_classe = UneClasse()</span>
+<span class="s">    ma_classe.une_methode()</span>
+
+<span class="gh">Documentation</span>
+<span class="gh">-------------</span>
+
+On peut facilement extraire la documentation d&#39;un module grace à la directive <span class="s">``automodule``</span>.
+
+<span class="gh">Module fichier</span>
+<span class="gh">++++++++++++++</span>
+
+<span class="p">..</span> <span class="ow">automodule</span><span class="p">::</span> truc.fichier
+     <span class="nc">:members:</span>
+
+
+<span class="p">..</span> <span class="ow">toctree</span><span class="p">::</span>
+   <span class="nc">:maxdepth:</span> <span class="nf">2</span>
+</pre></div>
+</div>
+<p>Dans cet example, nous avons utilisé la directive automodule qui importe un module (il existe aussi autoclass et autofunction) et utilise sa chaine de documentation. Le paramètre <code class="docutils literal"><span class="pre">:members:</span></code> permet d&#8217;afficher automatiquement les membres du modules recursivement (classe, méthodes, functions).</p>
+<p>La directive toctree permet de créer une arborescence à partir de fichiers <code class="docutils literal"><span class="pre">.rst</span></code>. Par exemple</p>
+<div class="highlight-rest"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="ow">toctree</span><span class="p">::</span>
+   <span class="nc">:maxdepth:</span> <span class="nf">1</span>
+
+   introduction
+   part_1
+   part_2
+</pre></div>
+</div>
+</div>
+<div class="section" id="pour-aller-plus-loin">
+<h2>5.2.3. Pour aller plus loin<a class="headerlink" href="#pour-aller-plus-loin" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Regarder la documentation officielle et en particulier la page <a class="reference external" href="http://www.sphinx-doc.org/en/stable/rest.html">www.sphinx-doc.org/en/stable/rest.html</a></p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table des Matières</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">5.2. Créer une documentation</a><ul>
+<li><a class="reference internal" href="#utilisation">5.2.1. Utilisation</a></li>
+<li><a class="reference internal" href="#exemple">5.2.2. Exemple</a></li>
+<li><a class="reference internal" href="#pour-aller-plus-loin">5.2.3. Pour aller plus loin</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">5. Gérer un projet en python</a><ul>
+      <li>Previous: <a href="package.html" title="Chapitre précédent">5.1. Modules and Package</a></li>
+      <li>Next: <a href="test_unitaire.html" title="Chapitre suivant">5.3. Test unitaire</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>Cette page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/projets/documentation.txt"
+            rel="nofollow">Montrer le code source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Recherche rapide</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, Pierre Cladé.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+      |
+      <a href="../_sources/projets/documentation.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

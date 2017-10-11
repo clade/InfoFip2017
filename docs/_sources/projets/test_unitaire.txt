@@ -1,0 +1,78 @@
+Test unitaire
+=============
+
+Exemple
++++++++
+
+En informatique, il est important de toujours tester son code. Il existe plusieurs librairie en Python permettant d'automatiser l'exécution des tests. Nous avons choisi de présenter ``unittest``. 
+
+Avec cette librairie, chaque test est représenté par une classe. On peut ensuite choisir les tests que l'on veut exécuter. 
+
+Voici un exemple (que l'on mettra dans le fichier test.py) ::
+
+    import unittest
+
+    class TestStringMethods(unittest.TestCase):
+
+        def test_upper(self):
+            self.assertEqual('foo'.upper(), 'FOO')
+
+        def test_isupper(self):
+            self.assertTrue('FOO'.isupper())
+            self.assertFalse('Foo'.isupper())
+
+        def test_split(self):
+            s = 'hello world'
+            self.assertEqual(s.split(), ['hello', 'world'])
+            # check that s.split fails when the separator is not a string
+            with self.assertRaises(TypeError):
+                s.split(2)
+
+    if __name__ == '__main__':
+        unittest.main()
+
+Pour exécuter le test, on peut simplement exécuter le fichier. On peut aussi utiliser une commande ::
+
+    python -m unittest test # test est le nom du module (fichier test.py)
+    python -m unittest discover
+
+L'option discover est utilisée lorsqu'il y a plusieurs fichiers de test. Dans ce cas, tous les fichiers commençant par test seront considérés comme des fichiers de test. 
+
+On pourra regarder la documentation pour plus de détail. Il existe un grand nombre de méthode assertXXX (par exemple assertIsInstance, assertAlmostEqual, assertLess). 
+
+
+Utilisation dans une librairie
+++++++++++++++++++++++++++++++
+
+Lorsque l'on utilise unittest dans une librairie, il faut importer le module que l'on teste. Un choix consiste à écrire le test comme un sous-module de la librairie et à importer le module que l'on teste comme un module local. Il faudra alors exécuter le test depuis la racine du package. 
+
+Par exemple ::
+
+    my_package/
+        __init__.py
+        pkg1/
+            __init__.py
+            test/
+                __init__.py
+                test_pkg1.py
+        mod1.py
+        test/
+            __init__.py
+            test_mod1.py
+        
+    
+Dans le fichier ``test_mod1.py``, on écrira::
+
+    from .. import mod1
+    # ou bien
+    from ..mod1 import xxx
+
+
+Pour effectuer le test, on pourra alors utiliser l'une des commandes::
+
+    python -m unittest discover
+    python -m unittest my_package.test.test_mod1
+    python -m unittest my_package/test/test_mod1.py
+
+
+

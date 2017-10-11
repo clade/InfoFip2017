@@ -1,0 +1,11 @@
+from pylab import *
+X = linspace(-2,2, 100)
+Y = sin(X)**2*exp(-X**2)
+Y_noise = Y + .1*(rand(len(X))-0.5)
+plot(X,Y, label=u"Theory")
+plot(X,Y_noise,'o', label=u"Experiment")
+xlabel(u'Voltage [V]')
+ylabel(u'Length [m]')
+title("Nonsense graph")
+legend()
+grid(True)

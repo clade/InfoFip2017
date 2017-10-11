@@ -1,0 +1,177 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>5.3. Test unitaire &mdash; documentation Python pour la physique 1.0</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/translations.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="documentation Python pour la physique 1.0" href="../index.html" />
+    <link rel="up" title="5. Gérer un projet en python" href="index.html" />
+    <link rel="next" title="5.4. Conclusion" href="conclusion.html" />
+    <link rel="prev" title="5.2. Créer une documentation" href="documentation.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="test-unitaire">
+<h1>5.3. Test unitaire<a class="headerlink" href="#test-unitaire" title="Lien permanent vers ce titre">¶</a></h1>
+<div class="section" id="exemple">
+<h2>5.3.1. Exemple<a class="headerlink" href="#exemple" title="Lien permanent vers ce titre">¶</a></h2>
+<p>En informatique, il est important de toujours tester son code. Il existe plusieurs librairie en Python permettant d&#8217;automatiser l&#8217;exécution des tests. Nous avons choisi de présenter <code class="docutils literal"><span class="pre">unittest</span></code>.</p>
+<p>Avec cette librairie, chaque test est représenté par une classe. On peut ensuite choisir les tests que l&#8217;on veut exécuter.</p>
+<p>Voici un exemple (que l&#8217;on mettra dans le fichier test.py)</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">unittest</span>
+
+<span class="k">class</span> <span class="nc">TestStringMethods</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">test_upper</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span> <span class="s1">&#39;FOO&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">test_isupper</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="s1">&#39;FOO&#39;</span><span class="o">.</span><span class="n">isupper</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="s1">&#39;Foo&#39;</span><span class="o">.</span><span class="n">isupper</span><span class="p">())</span>
+
+    <span class="k">def</span> <span class="nf">test_split</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="s1">&#39;hello world&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">split</span><span class="p">(),</span> <span class="p">[</span><span class="s1">&#39;hello&#39;</span><span class="p">,</span> <span class="s1">&#39;world&#39;</span><span class="p">])</span>
+        <span class="c1"># check that s.split fails when the separator is not a string</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">assertRaises</span><span class="p">(</span><span class="ne">TypeError</span><span class="p">):</span>
+            <span class="n">s</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">unittest</span><span class="o">.</span><span class="n">main</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Pour exécuter le test, on peut simplement exécuter le fichier. On peut aussi utiliser une commande</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">unittest</span> <span class="n">test</span> <span class="c1"># test est le nom du module (fichier test.py)</span>
+<span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">unittest</span> <span class="n">discover</span>
+</pre></div>
+</div>
+<p>L&#8217;option discover est utilisée lorsqu&#8217;il y a plusieurs fichiers de test. Dans ce cas, tous les fichiers commençant par test seront considérés comme des fichiers de test.</p>
+<p>On pourra regarder la documentation pour plus de détail. Il existe un grand nombre de méthode assertXXX (par exemple assertIsInstance, assertAlmostEqual, assertLess).</p>
+</div>
+<div class="section" id="utilisation-dans-une-librairie">
+<h2>5.3.2. Utilisation dans une librairie<a class="headerlink" href="#utilisation-dans-une-librairie" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Lorsque l&#8217;on utilise unittest dans une librairie, il faut importer le module que l&#8217;on teste. Un choix consiste à écrire le test comme un sous-module de la librairie et à importer le module que l&#8217;on teste comme un module local. Il faudra alors exécuter le test depuis la racine du package.</p>
+<p>Par exemple</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">my_package</span><span class="o">/</span>
+    <span class="n">__init__</span><span class="o">.</span><span class="n">py</span>
+    <span class="n">pkg1</span><span class="o">/</span>
+        <span class="n">__init__</span><span class="o">.</span><span class="n">py</span>
+        <span class="n">test</span><span class="o">/</span>
+            <span class="n">__init__</span><span class="o">.</span><span class="n">py</span>
+            <span class="n">test_pkg1</span><span class="o">.</span><span class="n">py</span>
+    <span class="n">mod1</span><span class="o">.</span><span class="n">py</span>
+    <span class="n">test</span><span class="o">/</span>
+        <span class="n">__init__</span><span class="o">.</span><span class="n">py</span>
+        <span class="n">test_mod1</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+<p>Dans le fichier <code class="docutils literal"><span class="pre">test_mod1.py</span></code>, on écrira:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">mod1</span>
+<span class="c1"># ou bien</span>
+<span class="kn">from</span> <span class="nn">..mod1</span> <span class="k">import</span> <span class="n">xxx</span>
+</pre></div>
+</div>
+<p>Pour effectuer le test, on pourra alors utiliser l&#8217;une des commandes:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">unittest</span> <span class="n">discover</span>
+<span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">unittest</span> <span class="n">my_package</span><span class="o">.</span><span class="n">test</span><span class="o">.</span><span class="n">test_mod1</span>
+<span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">unittest</span> <span class="n">my_package</span><span class="o">/</span><span class="n">test</span><span class="o">/</span><span class="n">test_mod1</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table des Matières</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">5.3. Test unitaire</a><ul>
+<li><a class="reference internal" href="#exemple">5.3.1. Exemple</a></li>
+<li><a class="reference internal" href="#utilisation-dans-une-librairie">5.3.2. Utilisation dans une librairie</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">5. Gérer un projet en python</a><ul>
+      <li>Previous: <a href="documentation.html" title="Chapitre précédent">5.2. Créer une documentation</a></li>
+      <li>Next: <a href="conclusion.html" title="Chapitre suivant">5.4. Conclusion</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>Cette page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/projets/test_unitaire.txt"
+            rel="nofollow">Montrer le code source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Recherche rapide</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, Pierre Cladé.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+      |
+      <a href="../_sources/projets/test_unitaire.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,353 @@
+.. _numpy:
+
+Numpy Array
+===========
+
+Numpy array is not a native Python datatype. It is part of the ``numpy`` package. This is the datatype that should be used for large numeric data analysis or numerical calculation. They differ from list : the size of a numpy array cannot be modified and all the data inside an array are of the same type. Those constraints allow much faster computation. We will mainly use 1D and 2D array. They can however be of any dimension. Numpy arrays allow users to perform calculation in a way similar to Matlab or Scilab. 
+
+Some examples : ::
+
+  from numpy import *
+
+  a = array([4,23,3]) # 1D array
+  print a[2]
+  a[2] = 13
+
+  b = array([[1,2,3],[2,3,4]])
+  print b
+
+In order to use array, we should first import the numpy package. The array command can be used to create array from any iterable (for example a ``list``). A list of number will create a 1D array. A list of lists having the same size will create a 2D array. 
+
+One can create an array containing the 0, 1, 2, 3, ... sequence using the ``arange`` command. This command has the same arguments than the ``range`` command (``arange(end)``, ``arange(start, end)``, ``arange(start, end, step)``). Items of an array can be changed using the same syntax as ``list``. The size of an array can be obtained using the ``shape`` property. This property returns a tuple. ::
+
+  a = arange(10)
+  print a[2]
+  a[3] = 2
+  print a.shape
+
+
+Mathematical operation on array
+-------------------------------
+
+One of the main advantage of using numpy array is that it is possible to perform usual operation, item by item, without using a loop. This holds for binary operation (sum, product, difference, ...) and also for usual mathematical operation (sin, cos, tan, exp, log, ...). In order to work with array, those function should be imported from the ``numpy`` module (and not the ``math`` module).  Global functions on array, such as ``sum``, ``prod``, ``max``, ``min``, ``mean``, ``std`` can be used either as method of the array or as function of the numpy module. 
+
+For example : ::
+
+  from numpy import *
+  a = arange(10)
+  print a**2 - sin(a) 
+
+  even_numbers = arange(2,10000,2)
+  print 2*prod(even_numbers**2)/prod(even_numbers**2-1) 
+
+  x = linspace(0,5, 1000)
+  # using function
+  print min(x+2/x)
+  #using methods
+  a = x + 2/x 
+  a.min()
+
+In this example, we have used the function ``linspace(start, end, nb_steps)``. This function creates an array with ``nb_steps`` values between ``start`` and ``end``. 
+
+Note also that the ``sin`` function is imported from the numpy library. This function takes an array and returns an array of the same size. 
+
+Note that the builtins functions ``sum``, ``max`` and ``min`` are different than the one imported from ``numpy``. If you use the bultin ones, you loose the advantage of using numpy array.
+
+It is possible to create a function that works with an array from any function using the ``vectorize`` function of the ``numpy`` package : ::
+
+    def myfunction(x):
+        ....
+        return ....
+
+    myfunction = vectorize(myfunction)
+    print myfunction(linspace(0,1))
+
+
+Data type
+---------
+
+In order to get the data type of the array, one can use the dtype attribute. It is possible to set the data type of an array when it is created using the optional ``dtype`` parameter. 
+
+For example : ::
+
+  a = arange(10)
+  print a.dtype
+  a = arange(10, dtype='float64')
+  print a.dtype
+
+Numpy array have more data type than Python. For example, floating point number can be saved as 32, 64 or 128 bits (``float32``, ``float64``, ``float128``), integer are usually limited to 64 bits (this depends on you system).
+
+The data type of an array cannot be modified. If an array is defined as an integer array one cannot put inside a float number. This number will be converted to an integer (without warning). ::
+    
+      a = arange(5)
+      a[1] = 3.141592
+      print a[1] # a[1]==3
+
+Of course, you can create a new array from an existing one with the data type you want. 
+
+Array indexing
+--------------
+
+One can access to array items the same way than for list (item number starts at 0, one can extract an array using slices : ``a[start:end:step]``, negative numbers start from the end). Numpy array can be modified. This can be done element by element or on a group of elements. 
+
+For example : ::
+
+  a = arange(10)
+  a[3] = 34
+  a[::2] = 0 #This is not possible for a list
+
+Be aware that when an array is extracted using slices, it share the same memory space than the initial array. The following code will modify the array ``a``. ::
+
+  a = arange(10)
+  b = a[::2]
+  b[:] = 0
+  print a
+
+It is possible to extract an array from an array using a boolean array. For example : ::
+
+  a = array([23,25,10])
+  condition = array([False, True, False])
+  print a[condition]
+
+This is very useful because it is possible to create a boolean array using comparison and logical operators.
+
+For example : ::
+
+  a = arange(10)
+  cond = a>=5
+  print cond
+
+  a[cond] = 5
+
+  b = arange(100)
+  cond = (b%2==0) & ~(b%5==2)
+  print b[cond]
+
+Logical operators on array are ``'&'`` for and, ``'|'`` for or and ``'~'`` for not. The operators ``and``, ``or`` and ``not`` do not work with array (indeed they are not operator!). 
+
+2D array and linear algebra
+---------------------------
+
+Here are some examples of 2D array ::
+
+   from numpy import *
+
+   a = array([[1,2],[1,9]])
+
+   print a[:,0] # Column number 0
+   print a[1,:] # Line number 1
+
+
+2D numpy array can be used as matrices. The matrix product **is not** the ``*`` operator (which makes the product element by element). In order to perform true product one can use the ``dot`` function of the numpy package. The linalg package contains also many function of linear algebra (see the documentation). ::
+
+   import numpy as np
+   from numpy import linalg
+
+   a = np.array([[1,2],[1,9]])
+   b = np.array([[3,1.],[3.14,6.02]])
+   c = np.dot(a,b)
+
+   print linalg.eig(c) # eigen vectors and eigen values
+
+We briefly mention here the ``matrix`` package of ``numpy``. Using the ``matrix`` type, one can create matrices or vectors. The product is done conveniently using the ``*`` operator. 
+
+Useful functions and methods
+----------------------------
+
+Array methods :
+
+* ``.sum()``, ``.prod()``, ``.mean()``, ``.std()``. Those method have an ``axis`` option that perform the operation only on one ``axis``.
+
+* ``.reshape(shape)`` : change the shape. The shape argument is a tuple. The total number of items should be unchanged
+
+* ``.flatten()`` : makes a 1D array
+
+* ``.transpose()``
+
+Array creation :
+
+* ``arange`` : similar to the range command. 
+
+* ``linspace`` : the ``linspace(start, stop, num=50, endpoint=True)``. The ``endpoint`` option set weather or not ``stop`` is the last sample (or the next one). 
+
+* ``zeros(tpl)``, where ``tpl=(n1,n2,...)`` is a tuple containing the shape of the array.
+
+* ``ones(tpl)`` : similar to zeros. 
+
+* ``rand(nx, ny, ...)`` : random number between 0 and 1. The shape will be (nx, ny, ...). 
+
+*  ``X,Y = meshgrid(x,y)`` : created 2D array X and Y such that ``X[i,j] = x[j]`` and ``Y[i,j] = y[j]``
+
+Saving numpy array
+------------------
+
+Ascii format
+~~~~~~~~~~~~
+
+One can save and read 2D numpy array in a text file using the  ``savetxt(fname, tableau)`` and ``loadtxt`` commands. This is a universal method (ascii file can be read by many applications). However it is slow and this method can lead to rounding error when numbers are converted to text. 
+
+The ``loadtxt`` can be used to read almost any file produced by another application. Look to the function documentation for the different options. For example one can set the separator in order to read a CSV (comma separated values) file. ::
+
+  loadtxt(filename, delimiter=',')
+
+
+Binary format
+~~~~~~~~~~~~~
+
+The ``load`` and ``save`` function of the ``numpy`` module can be used to store directly numpy array in a file. This method is a direct copy of the memory. It is fast and uses less memory space. However if does not provide direct compatibility with other application.
+
+It is possible to convert binary data of other application to array. If the data is written into a file, one can use the ``fromfile`` function. If the data comes directly from a function (for example, if it comes from a CCD camera or a digital scope), one can use the ``frombuffer`` function. They are universal functions that can be parametrized to read any format (signed/unsigned integer, big or little endian, 16 or 32 bits, ...). 
+
+Understanding numpy array
+-------------------------
+
+It's useful to understand how numpy arrays are stored in the memory. Because the size and the data type of the array are not mutable, the total amount of memory is fixed. The place where the data are stored is a contiguous block of memory, in a way similar to array in C or Fortran. One can access to this memory block using the ``data`` attribute of an array : this will return a buffer (basically a string of bytes). For example :: 
+    
+    from numpy import *
+    a = arange(5, dtype=int16)
+
+    print len(a.data) # 5*2 = 10 bytes
+    assert a.data[0]==chr(0) # The first byte is 0
+
+The numpy array does not only contain a pointer to the starting address in the block of memory, but also informations on how to retrieve elements of the array. Each element of the array starts at a specific position in the block of memory. This position is a linear combination of the indexes in the array. For example, in a 10x20 2D array of int32, the position of element (i,j) will be :math:`20\times4\times i + 4\times j`. The two coefficients :math:`(80, 4)` are the only parameters you need in order to read the array. The are obtained from the ``strides`` property of the array. 
+
+It is important to know that you can create two arrays that share the same memory block, but with a different starting address and a different ``strides``. This is the mechanism used when slicing an array or reshaping the array. ::
+
+    from numpy import *
+    a = arange(10, dtype=int16)
+    print a.strides # (2,)
+    b = a[::2]
+    print b.strides # (4,)
+
+    a = array([1,2],[3,4])
+    I,J = a.strides
+    a.strides = (J,I) # transposition
+
+This mechanism is very fast and efficient because no copy of the data is performed. However, we should remember that modifying the content of one array will modify the content of all arrays that share the same memory block.
+
+We have seen in the previous section that we can use operation on array (like ``+``, ``*``, ``/``, ...). They will perform the operatio element by element and return a new array. Those operation can also be used between an array and a scale (``2*a``). Numpy has a mechanism called broadcasting that makes possible, under certain circumstance (see `docs.scipy.org/doc/numpy/user/basics.broadcasting.html <docs.scipy.org/doc/numpy/user/basics.broadcasting.html>`_), to work with two arrays of different sizes. For example an array of size :math:`m\times1` can operate with an array of size :math:`1\times n` to form an array of size :math:`m\times n`. The arrays are broadcast to have the correct dimension by duplicating the column or row. Indeed, there is no real dupliction, simply numpy set the strides of the broadcast dimension to 0. 
+
+Beyond numpy
+------------
+
+As we have seen, numpy array should be used when dealing with large data set. **You should not use** loops with numpy array. When there is a way to not use loop, execution can then be almost as fast as with a compiled language. 
+
+If you really have to use a loop and if this loop is the bottle neck of you program, then you can consider using alternative solution based on compilaton. There are two ways : either by building your library directely in the langage you choose, and then link it to python. In C, you can use the ctypes module and in Fortran, the F2PY module. The other, and more convenient, alternative is to use a tool to convert your function to a compiled langage. This a how the Cython module work. 
+
+Cython
+~~~~~~
+
+The Cython package is used to convert a Python function to a C function which is compiled.
+
+Let us see a simple example. We want to calculate the value of :math:`\pi` using the following formula :
+
+.. math::
+
+   \frac\pi4=\sum_{k=0}^{\infty}\frac{(-1)^k}{2k+1}
+
+This formula is chosen because it is probably the slowest formula that can be used to calculate :math:`\pi`. We will calculate the sum up to :math:`k=10^6`. The ``%timeit`` magic function of IPython was used. ::
+
+    # Using python
+    %timeit sum([(-1)**k/float(2*k+1) for k in range(10**6)])
+    # result : 493ms
+
+    %timeit sum([(1-2*(k%2))/float(2*k+1) for k in range(10**6)])
+    # result : 253 ms
+
+    def calc_pi(N):
+        out = 0
+        sgn = 1.
+        for k in range(N):
+            out += sgn/(2*k+1)
+            sgn = -sgn
+        return out
+
+    %timeit calc_pi(10**6)
+    # result 112ms
+
+    import numpy as np
+    k = np.arange(10**6, dtype=np.float64)
+    %timeit np.sum((1-(k%2))/(2*k+1))
+    # result : 17ms
+
+Below is a simple example using cython. The online documentation (`http://docs.cython.org/ <http://docs.cython.org/>`_) will give you more informations on how to use cython and to compile the code below. We have created a calc_pi.pyx file from the pure python function. The pyx file contains regular Python code with declaration of the type of variable. :: 
+
+    def calc_pi(int N):
+        cdef double out = 0
+        cdef int i
+        cdef double sgn = 1
+        for i in xrange(N):
+            out += sgn/(2*i+1)
+            sgn = -sgn
+        return out
+
+To use the code below, run the following script ::
+
+    import pyximport; pyximport.install()
+    import calc_pi
+
+    print calc_pi(1E6)
+
+Once compiled, the calc_pi function can be used as any python function. The duration is 4.9ms, four times faster than numpy. Even in the situation where numpy can be used, cython can be faster, the main reason is that in this example we don't need to store an array in memory. 
+
+ctypes
+~~~~~~
+
+Ctypes is a library that allow to use C functions in Python. This library allow you to link any functions. You don't need the source code of the function but only a compiled shared library (.so for linux and .dll for windows). For this example, I will show you how to compile your shared library from a C file, but ctypes can be used even if you get a library from a third party (for example the driver of an instrument). 
+
+The C file to calculate :math:`pi` is the following (named pi.c): 
+
+.. code-block:: c
+
+    #include <stdio.h>
+    #include <stdlib.h>
+
+    int calc_pi(int N, double * out){
+        int i;
+        double sgn = 1;
+        *out = 0;
+        for(i=0; i<N; i++){
+            *out += sgn/(2*i+1);
+            sgn = -sgn;
+            }
+        }
+
+Which is compiled (under linux) using : ::
+
+    gcc -shared -o libpi.so -fPIC pi.c  -Wno-pointer-to-int-cast
+
+The ``libpi.so`` is now linked using ctypes : ::
+
+    import ctypes
+    from ctypes import byref
+    lib = ctypes.cdll.LoadLibrary('./libpi.so')
+
+    calc_pi = lib.calc_pi
+    out = ctypes.c_double(0) # creation of the output variable
+    calc_pi(10**6, byref(out))
+    print out.value
+
+In this example, the memory for the output variable is created in the python script and then passed by reference to the C function. The execution time is similar to the Cython example.
+
+
+Numba
+~~~~~
+
+Numba is a compiler for python. It is even simpler to use than cython, because no modification of the code is required. A simple decorator is used to accelerate a Python function. ::
+
+    import numba
+
+    @numba.jit(numba.float64(numba.int32), nogil=True)
+    def calc_pi_numba(N):
+        out = 0
+        sgn = 1.
+        for k in range(N):
+            out += sgn/(2*k+1)
+            sgn = -sgn
+        return out
+
+
+
+
+
+

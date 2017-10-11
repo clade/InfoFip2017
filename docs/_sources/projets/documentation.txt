@@ -1,0 +1,80 @@
+Créer une documentation
++++++++++++++++++++++++
+
+La librairie ``Sphinx`` est devenue le logiciel standard premettant d'écrire une documentation python. Le fait qu'elle soit écrite en python lui permet d'effectuer automatiquement un certain nombre de taches (comme récupérer des chaînes de documentation, effectuer des test, ...). 
+
+Sphinx permet d'exporter la documentation en format html mais aussi en Latex (et donc en PDF) ou en ODF (Libre office). Ce cours est écrite en grace à Sphinx. 
+
+Utilisation
+===========
+
+Pour l'utiliser on lance le script ``sphinx-quickstart``. On répond ensuite aux questions !
+
+Il y alors deux fichiers importants : le fichier de configuration (``conf.py``). Ce fichier python peut être modifié pour adapter le projet (et changer ce qui a été créé suite aux questions de ``sphinx-quickstart``).
+
+Le deuxième fichier est ``index.rst``. Il s'agit du fichier racine de la documentation. Sphinx utilise le reStructuredText comme langage de balisage. 
+
+Exemple
+=======
+
+Voici un exemple de fichier ``index.rst``
+
+.. code-block:: rest
+
+    Voici un exemple de documentation
+    =================================
+
+    Voici un super projet. 
+
+    Installation
+    ------------
+
+    Il suffit de lancer la commande ::
+
+        python setup.py
+
+    Utilisation
+    -----------
+
+    Voici un exemple d'utilisation ::
+
+        from truc.fichier import UneClasse
+
+        ma_classe = UneClasse()
+        ma_classe.une_methode()
+
+    Documentation
+    -------------
+
+    On peut facilement extraire la documentation d'un module grace à la directive ``automodule``. 
+
+    Module fichier
+    ++++++++++++++
+
+    .. automodule:: truc.fichier
+         :members:
+
+
+    .. toctree::
+       :maxdepth: 2
+
+
+Dans cet example, nous avons utilisé la directive automodule qui importe un module (il existe aussi autoclass et autofunction) et utilise sa chaine de documentation. Le paramètre ``:members:`` permet d'afficher automatiquement les membres du modules recursivement (classe, méthodes, functions). 
+
+La directive toctree permet de créer une arborescence à partir de fichiers ``.rst``. Par exemple 
+
+.. code-block:: rest
+
+   .. toctree::
+      :maxdepth: 1
+
+      introduction
+      part_1
+      part_2
+
+
+Pour aller plus loin
+====================
+
+Regarder la documentation officielle et en particulier la page `www.sphinx-doc.org/en/stable/rest.html <http://www.sphinx-doc.org/en/stable/rest.html>`_
+

@@ -1,0 +1,29 @@
+Conclusion
+==========
+
+Voici donc typiquement l'arborescence des fichiers d'un projet::
+
+    mon_projet/
+        setup.py
+        README.rst
+        my_package/
+            __init__.py
+            pkg1/
+                __init__.py
+                test/
+                    __init__.py
+                    test_pkg1.py
+            mod1.py
+            test/
+                __init__.py
+                test_mod1.py
+        doc/
+            index.rst
+            conf.py
+            .....
+        exemple/
+            exemple1.py
+        autre_chose/
+
+Il est important de garder les répertoire my_package et doc aussi propre que possible. On mettre les exemples en dehors de my_package. Les autres choses (notes personnelles, tests temporaires, ...) seront mis dans d'autres répertoires afin de ne laisser que le setup.py et le README dans le répertoire principal.
+        
